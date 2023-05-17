@@ -1,3 +1,3 @@
 <?php
-    echo "Strona startowa";
+    echo "Strona startowa projektu";
 ?>
