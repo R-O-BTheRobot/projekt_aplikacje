@@ -1,3 +1,4 @@
 <?php
-    echo "Strona początkowa projektu";
+  header("location: ./pages/index.php");
+  echo "Strona początkowa projektu";
 ?>
