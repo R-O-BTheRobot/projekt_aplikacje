@@ -1,0 +1,4 @@
+ Do zrobienia:
+ - 3 poziomy interakcji ze stroną, jako klient (kupujący), moderator (dodający produkcty) i administrator (zarządzający klientami)
+ - zmienna sesyjna która pozwoli na przechowywanie koszyka
+ - możliwość dodawania i usuwania produktów sklepowych
