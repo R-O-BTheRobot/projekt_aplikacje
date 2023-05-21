@@ -27,6 +27,19 @@
                 <?php
                   require_once "../scripts/dbconnect.php";
                   echo $conn->connect_errno;
+
+                  $sql = "SELECT * FROM `products`";
+                  $result = $conn->query($sql);
+                  while ($product = $result->fetch_assoc())
+                  {
+                    echo <<< GET_PRODUCTS_FROM_DB
+                    <div class="col-sm-2">
+                        <a href="https://phpfinal.robtherobot.space/pages/examples/e-commerce.html?product=$product[id]" data-toggle="lightbox" data-title="$product[id]" data-gallery="gallery">
+                                <img src="https://via.placeholder.com/300/FFFFFF?text=$product[id]" class="img-fluid mb-2" alt="white sample">
+                        </a>
+                    </div>
+GET_PRODUCTS_FROM_DB;
+                  }
                 ?>
                 <!--<div class="col-sm-2">
                   <a href="https://phpfinal.robtherobot.space/pages/examples/e-commerce.html" data-toggle="lightbox" data-title="sample 1 - white" data-gallery="gallery">
