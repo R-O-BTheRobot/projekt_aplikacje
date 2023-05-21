@@ -1,4 +1,4 @@
 <?php
-    echo "Strona początkowa projektu";
-    header("./pages/index.php");
+  header("./pages/index.php");
+  echo "Strona początkowa projektu";
 ?>
