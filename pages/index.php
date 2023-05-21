@@ -25,7 +25,8 @@
             <div class="card-body">
               <div class="row">
                 <?php
-
+                  require_once "../scripts/dbconnect.php";
+                  echo $conn;
                 ?>
                 <!--<div class="col-sm-2">
                   <a href="https://phpfinal.robtherobot.space/pages/examples/e-commerce.html" data-toggle="lightbox" data-title="sample 1 - white" data-gallery="gallery">
