@@ -24,7 +24,10 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <div class="col-sm-2">
+                <?php
+
+                ?>
+                <!--<div class="col-sm-2">
                   <a href="https://phpfinal.robtherobot.space/pages/examples/e-commerce.html" data-toggle="lightbox" data-title="sample 1 - white" data-gallery="gallery">
                     <img src="https://via.placeholder.com/300/FFFFFF?text=1" class="img-fluid mb-2" alt="white sample">
                   </a>
@@ -83,7 +86,7 @@
                   <a href="https://via.placeholder.com/1200/000000.png?text=12" data-toggle="lightbox" data-title="sample 12 - black" data-gallery="gallery">
                     <img src="https://via.placeholder.com/300/000000?text=12" class="img-fluid mb-2" alt="black sample">
                   </a>
-                </div>
+                </div>-->
               </div>
             </div>
           </div>
