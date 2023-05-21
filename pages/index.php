@@ -34,8 +34,8 @@
                   {
                     echo <<< GET_PRODUCTS_FROM_DB
                     <div class="col-sm-2">
-                        <a href="https://phpfinal.robtherobot.space/pages/examples/e-commerce.html?product=$product[id]" data-toggle="lightbox" data-title="$product[id]" data-gallery="gallery">
-                                <img src="https://via.placeholder.com/300/FFFFFF?text=$product[id]" class="img-fluid mb-2" alt="white sample">
+                        <a href="https://phpfinal.robtherobot.space/pages/examples/e-commerce.html?product=$product[product_id]" data-toggle="lightbox" data-title="$product[product_id]" data-gallery="gallery">
+                                <img src="https://via.placeholder.com/300/FFFFFF?text=$product[product_id]" class="img-fluid mb-2" alt="white sample">
                         </a>
                     </div>
 GET_PRODUCTS_FROM_DB;
