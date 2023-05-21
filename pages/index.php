@@ -26,7 +26,7 @@
               <div class="row">
                 <?php
                   require_once "../scripts/dbconnect.php";
-                  echo $conn->connect_errno;
+                  //echo $conn->connect_errno;
 
                   $sql = "SELECT * FROM `products`";
                   $result = $conn->query($sql);
