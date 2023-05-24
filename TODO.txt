@@ -9,4 +9,4 @@
  - Wycięcie zawartości z /pages/buty/buty.php i przygotowanie strony do wyświetlania zawartości bazując na HEREDOCu pobierającym dane z bazy danych
  - Jeżeli przejdziemy na stronę /pages/buty/buty.php bez ustalonej zmiennej $_GET["product"] zostajemy przekierowani na stronę główną /pages/index.php
  - Stworzenie sidebara dla /pages/buty/buty.php i /pages/index.php
- - Usunięcie ramki i napisu w /pages/index.php
+
