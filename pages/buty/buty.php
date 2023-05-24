@@ -41,7 +41,7 @@ if(!isset($_GET["product"]))
               <div class="col-12">
                 <?php
                   require_once("../../scripts/dbconnect.php");
-                  $sql = "SELECT * FROM products WHERE product.id=$_GET[product];";
+                  $sql = "SELECT * FROM products WHERE product_id=$_GET[product];";
                   $result = $conn->query($sql);
                   $product = $result->fetch_assoc();
                   echo "<img class='product-image' src=$product[picture_link]>";
