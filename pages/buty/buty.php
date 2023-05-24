@@ -1,5 +1,15 @@
+<?php
+/**
+ * @var string $conn
+ */
+
+if(!isset($_GET["product"]))
+  {
+    $_GET["product"] = 1;
+  }
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,7 +40,11 @@
               <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
               <div class="col-12">
                 <?php
-                  echo "<img class='product-image' src='https://via.placeholder.com/300/000000?text=1'>";
+                  require_once("../../scripts/dbconnect.php");
+                  $sql = "SELECT * FROM products WHERE product.id=$_GET[product];";
+                  $result = $conn->query($sql);
+                  $product = $result->fetch_assoc();
+                  echo "<img class='product-image' src=$product[picture_link]>";
                 ?>
                 <!--<img src="../../dist/img/prod-1.jpg" class="product-image" alt="Product Image">-->
               </div>
@@ -50,8 +64,8 @@
             <div class="col-12 col-sm-6">
               <?php
                 echo <<< PRODUCT_DETAILS
-                  <h3 class="my-3">Title_placeholder</h3>
-                  <p>Short_description_placeholder</p>
+                  <h3 class="my-3">$product[title]</h3>
+                  <p>$product[opis_short]</p>
 
                   <hr>
 
@@ -118,7 +132,7 @@
 
                   <div class="bg-gray py-2 px-3 mt-4">
                     <h2 class="mb-0">
-                      Price_placeholder zł
+                      $product[cena] zł
                     </h2>
                   </div>
 

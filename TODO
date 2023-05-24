@@ -10,5 +10,5 @@
  - Jeżeli przejdziemy na stronę /pages/buty/buty.php bez ustalonej zmiennej $_GET["product"] zostajemy przekierowani na stronę główną /pages/index.php
  - Stworzenie sidebara dla /pages/buty/buty.php i /pages/index.php
  - Edytuj bazę danych aby wspierała 4 kategorie jako typ enum (1 - do biegania, 2 - sportowe, 3 - turystyczne, 4 - codzienne)
-   Zmiany powinny być w prouctsach żeby nie wchodzić w warehouse'a
- - Nowa strona typu galeria przyjmująca jeden z 4 parametrów $_GET, zmieniająca zapytanie zgofnie z parametrem get na jeden z 4 typów enum z ww. zmiany w bazie danych
+   Zmiany powinny być w productsach żeby nie wchodzić w warehouse'a, albo w nowej tabeli i zrobić klucz obcy w productsach
+ - Nowa strona typu galeria przyjmująca jeden z 4 parametrów $_GET, zmieniająca zapytanie zgodnie z parametrem get na jeden z 4 typów enum z ww. zmiany w bazie danych
