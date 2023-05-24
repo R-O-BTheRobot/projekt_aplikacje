@@ -16,6 +16,38 @@
   <body>
   <div class="wrapper">
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
+      <div class="b-e-c">
+
+        <div class="b-e-f wnd-filter-container">
+          <div class="b-e-f-c">
+            <h3 class="b-e-f-title">Kategorie</h3>
+            <ul class="ef-level-1   ">
+              <li class="b-e-f-i">
+                <a href="/" rel="nofollow" class="wnd-link selected">Wszystkie produkty</a>
+
+              </li><li class="b-e-f-i">
+                <a href="/?collection=buty-turystyczne" rel="nofollow" class="wnd-link ">Buty turystyczne</a>
+
+              </li><li class="b-e-f-i">
+                <a href="/?collection=buty-do-biegania" rel="nofollow" class="wnd-link ">Buty do biegania</a>
+
+              </li><li class="b-e-f-i">
+                <a href="/?collection=buty-do-cwiczen-sportowych" rel="nofollow" class="wnd-link ">Buty do ćwiczeń sportowych</a>
+
+              </li><li class="b-e-f-i">
+                <a href="/?collection=buty-do-tenisa" rel="nofollow" class="wnd-link ">Buty do tenisa</a>
+
+              </li>
+            </ul>
+            <div class="b-e-f-select">
+              <div class="cf">
+                <div class="select">
+                  <select class="wnd-filter-select"><option value="/" selected="">Wszystkie produkty</option><option value="/?collection=buty-turystyczne">Buty turystyczne</option><option value="/?collection=buty-do-biegania">Buty do biegania</option><option value="/?collection=buty-do-cwiczen-sportowych">Buty do ćwiczeń sportowych</option><option value="/?collection=buty-do-tenisa">Buty do tenisa</option></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
     </aside>
     <div class="content-wrapper">
       <section class="content">
@@ -55,3 +87,4 @@ GET_PRODUCTS_FROM_DB;
   </div>
   </body>
 </html>
+
