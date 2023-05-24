@@ -23,9 +23,9 @@
           <div class="row">
             <div class="col-12">
               <div class="card card-primary">
-                <div class="card-header">
+               <!-- <div class="card-header">
                   <h4 class="card-title">Witamy na stronie sklepu internetowego XYZ!</h4>
-                </div>
+                </div> -->
                 <div class="card-body">
                   <div class="row">
                     <?php
