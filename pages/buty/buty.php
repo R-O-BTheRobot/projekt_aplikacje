@@ -64,7 +64,7 @@ if(!isset($_GET["product"]))
             <div class="col-12 col-sm-6">
               <?php
                 echo <<< PRODUCT_DETAILS
-                  <h3 class="my-3">$product[title]</h3>
+                  <h3 class="my-3">$product[tytul]</h3>
                   <p>$product[opis_short]</p>
 
                   <hr>
