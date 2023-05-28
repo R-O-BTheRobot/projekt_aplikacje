@@ -22,56 +22,6 @@
   <h1 style="align-center">Sklep z obuwiem</h1>
 </div>
 <div class="wrapper">
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
-
-    <div class="b-e-c">
-      <div class="b-e-f wnd-filter-container">
-        <div class="b-e-f-c">
-
-          <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-            <li class="nav-item">
-              <a href="#" rel="nofollow" class="nav-link">
-                <p>
-                  Wszystkie produkty
-                </p>
-              </a>
-
-            </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
-              <p>
-                Buty turystyczne
-              </p>
-              </a>
-            </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <p>
-                    Buty do biegania
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <p>
-                    Buty do ćwiczeń sportowych
-                  </p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <p>
-                    Buty do użytku codziennego
-                  </p>
-                </a>
-              </li>
-
-          </ul>
-
-        </div>
-      </div>
-  </aside>
   <div class="content-wrapper">
     <section class="content">
       <div class="container-fluid">
@@ -107,6 +57,47 @@ GET_PRODUCTS_FROM_DB;
       </div>
     </section>
   </div>
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <nav class="d-flex align-items-center">
+      <ul class="nav nav-pills nav-sidebar flex-column vertical" data-widget="treeview" role="menu" data-accordion="false">
+        <li class="nav-item">
+          <a href="#" rel="nofollow" class="nav-link">
+            <p>
+              Wszystkie produkty
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <p>
+              Buty turystyczne
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <p>
+              Buty do biegania
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <p>
+              Buty do ćwiczeń sportowych
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="#" class="nav-link">
+            <p>
+              Buty do użytku codziennego
+            </p>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </aside>
 </div>
 </body>
 </html>
