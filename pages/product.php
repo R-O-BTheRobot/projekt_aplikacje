@@ -40,7 +40,7 @@ if(!isset($_GET["product"]))
               <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
               <div class="col-12">
                 <?php
-                  require_once("../../scripts/dbconnect.php");
+                  require_once("../scripts/dbconnect.php");
                   $sql = "SELECT * FROM products WHERE product_id=$_GET[product];";
                   $result = $conn->query($sql);
                   $product = $result->fetch_assoc();
