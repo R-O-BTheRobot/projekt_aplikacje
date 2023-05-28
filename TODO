@@ -7,7 +7,6 @@
 
  Cele sprecyzowane:
  - Wycięcie zawartości z /pages/buty/buty.php i przygotowanie strony do wyświetlania zawartości bazując na HEREDOCu pobierającym dane z bazy danych
- - Jeżeli przejdziemy na stronę /pages/buty/buty.php bez ustalonej zmiennej $_GET["product"] zostajemy przekierowani na stronę główną /pages/index.php
  - Stworzenie sidebara dla /pages/buty/buty.php i /pages/index.php
  - Edytuj bazę danych aby wspierała 4 kategorie jako typ enum (1 - do biegania, 2 - sportowe, 3 - turystyczne, 4 - codzienne)
    Zmiany powinny być w productsach żeby nie wchodzić w warehouse'a, albo w nowej tabeli i zrobić klucz obcy w productsach

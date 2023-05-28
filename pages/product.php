@@ -23,11 +23,51 @@ if(!isset($_GET["product"]))
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
+<aside class="main-sidebar sidebar-dark-primary elevation-4 d-flex align-items-stretch">
+  <nav class="d-flex align-items-center">
+    <ul class="nav nav-pills nav-sidebar flex-column vertical" data-widget="treeview" role="menu" data-accordion="false">
+      <li class="nav-item">
+        <a href="#" rel="nofollow" class="nav-link">
+          <p>
+            Wszystkie produkty
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <p>
+            Buty turystyczne
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <p>
+            Buty do biegania
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <p>
+            Buty do ćwiczeń sportowych
+          </p>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="#" class="nav-link">
+          <p>
+            Buty do użytku codziennego
+          </p>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</aside>
 <!-- Site wrapper -->
 <div class="wrapper">
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-
 
     <!-- Main content -->
     <section class="content">
