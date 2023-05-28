@@ -3,17 +3,23 @@
  * @var string $conn
  */
 
-if(!isset($_GET["product"]))
-  {
-    echo "<script>history.back()</script>";
-  }
+  if(!isset($_GET["product"]))
+    {
+      echo "<script>history.back()</script>";
+    }
+  require_once("../scripts/dbconnect.php");
+  $sql = "SELECT * FROM products WHERE product_id=$_GET[product];";
+  $result = $conn->query($sql);
+  $product = $result->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | E-commerce</title>
+  <?php
+    echo "<title>$product[tytul] - Sklep XYZ</title>";
+  ?>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -106,42 +112,7 @@ if(!isset($_GET["product"]))
                 echo <<< PRODUCT_DETAILS
                   <h3 class="my-3">$product[tytul]</h3>
                   <p>$product[opis_short]</p>
-
                   <hr>
-
-                  <!--<h4>Available Colors</h4>
-                  <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-default text-center active">
-                    <input type="radio" name="color_option" id="color_option_a1" autocomplete="off" checked>
-                    Green
-                    <br>
-                    <i class="fas fa-circle fa-2x text-green"></i>
-                    </label>
-                    <label class="btn btn-default text-center">
-                    <input type="radio" name="color_option" id="color_option_a2" autocomplete="off">
-                    Blue
-                    <br>
-                      <i class="fas fa-circle fa-2x text-blue"></i>
-                    </label>
-                    <label class="btn btn-default text-center">
-                      <input type="radio" name="color_option" id="color_option_a3" autocomplete="off">
-                      Purple
-                      <br>
-                      <i class="fas fa-circle fa-2x text-purple"></i>
-                    </label>
-                    <label class="btn btn-default text-center">
-                      <input type="radio" name="color_option" id="color_option_a4" autocomplete="off">
-                      Red
-                      <br>
-                      <i class="fas fa-circle fa-2x text-red"></i>
-                    </label>
-                    <label class="btn btn-default text-center">
-                      <input type="radio" name="color_option" id="color_option_a5" autocomplete="off">
-                      Orange
-                      <br>
-                      <i class="fas fa-circle fa-2x text-orange"></i>
-                    </label>
-                  </div>-->
                   <h4 class="mt-3">Rozmiar</h4>
                   <div class="btn-group btn-group-toggle" data-toggle="buttons">
                     <label class="btn btn-default text-center">
