@@ -92,7 +92,7 @@
                   {
                     echo <<< GET_PRODUCTS_FROM_DB
                     <div class="col-sm-2">
-                        <a href="https://phpfinal.robtherobot.space/pages/examples/e-commerce.html?product=$product[product_id]" data-toggle="lightbox" data-title="$product[product_id]" data-gallery="gallery">
+                        <a href="https://phpfinal.robtherobot.space/pages/product.php?product=$product[product_id]" data-toggle="lightbox" data-title="$product[product_id]" data-gallery="gallery">
                                 <img src="$product[picture_link]" class="img-fluid mb-2" alt="Zdjęcie produktu $product[product_id]">
                         </a>
                     </div>

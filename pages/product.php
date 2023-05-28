@@ -5,7 +5,7 @@
 
 if(!isset($_GET["product"]))
   {
-    $_GET["product"] = 1;
+    echo "<script>history.back()</script>";
   }
 ?>
 <!DOCTYPE html>
@@ -18,9 +18,9 @@ if(!isset($_GET["product"]))
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <!-- Site wrapper -->
@@ -50,7 +50,7 @@ if(!isset($_GET["product"]))
               </div>
               <div class="col-12 product-image-thumbs">
                 <?php
-                  echo "<div class='product-image-thumb active'><img class='product-image' src='https://via.placeholder.com/300/000000?text=1'></div>";
+                  echo "<div class='product-image-thumb active'><img src=$product[picture_link]></div>";
                   echo "<div class='product-image-thumb'><img src=https://via.placeholder.com/300/000000?text=2></div>";
                   echo "<div class='product-image-thumb'><img src=https://via.placeholder.com/300/000000?text=3></div>";
                 ?>
@@ -202,7 +202,7 @@ PRODUCT_DETAILS;
 </div>
 <!-- ./wrapper -->
 
-<script src="../../plugins/jquery/jquery.min.js"></script>
+<script src="../plugins/jquery/jquery.min.js"></script>
 <script>
   $(document).ready(function() {
     $('.product-image-thumb').on('click', function () {
