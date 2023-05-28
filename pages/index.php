@@ -18,8 +18,8 @@
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body>
-<div class="col-sm-6">
-  <h1 style="align-center">Sklep z obuwiem</h1>
+<div class="d-flex justify-content-center">
+  <h1>Sklep z obuwiem</h1>
 </div>
 <div class="wrapper">
   <aside class="main-sidebar sidebar-dark-primary elevation-4 d-flex align-items-stretch">
