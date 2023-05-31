@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
       $$key = sanitizeInput($_POST["$key"]);
   }
 
-  require_once "./connect.php";
+  require_once "./dbconnect.php";
   $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
   $stmt->bind_param('s', $_POST["email1"]);
   $stmt->execute();
