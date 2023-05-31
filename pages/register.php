@@ -134,7 +134,7 @@ ERROR;
 
       <div class="social-auth-links text-center">
         <button type="submit" class="btn btn-primary btn-block">Załóż konto</button>
-        <a href="#" class="btn btn-block btn-danger">
+        <a href="../scripts/register.php" class="btn btn-block btn-danger">
           <i class="fab fa-google-plus mr-2"></i>
           Sign up using Google+
         </a>

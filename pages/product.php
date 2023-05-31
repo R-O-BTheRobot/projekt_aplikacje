@@ -29,86 +29,52 @@
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
-<aside class="main-sidebar sidebar-dark-primary elevation-4 d-flex align-items-stretch">
-  <nav class="d-flex align-items-center">
-    <ul class="nav nav-pills nav-sidebar flex-column vertical" data-widget="treeview" role="menu" data-accordion="false">
-      <li class="nav-item">
-        <a href="#" rel="nofollow" class="nav-link">
-          <p>
-            Wszystkie produkty
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <p>
-            Buty turystyczne
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <p>
-            Buty do biegania
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <p>
-            Buty do ćwiczeń sportowych
-          </p>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <p>
-            Buty do użytku codziennego
-          </p>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</aside>
-<!-- Site wrapper -->
 <div class="wrapper">
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <?php
+    require_once "./content_user/navbar.php";
+  ?>
+  <?php
+    require_once "./aside.php";
+  ?>
+  <!-- Site wrapper -->
+  <div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
 
-    <!-- Main content -->
-    <section class="content">
+      <!-- Main content -->
+      <section class="content">
 
-      <!-- Default box -->
-      <div class="card card-solid">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-12 col-sm-6">
-              <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
-              <div class="col-12">
-                <?php
+        <!-- Default box -->
+        <div class="card card-solid">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-sm-6">
+                <h3 class="d-inline-block d-sm-none">LOWA Men’s Renegade GTX Mid Hiking Boots Review</h3>
+                <div class="col-12">
+                  <?php
                   require_once("../scripts/dbconnect.php");
                   $sql = "SELECT * FROM products WHERE product_id=$_GET[product];";
                   $result = $conn->query($sql);
                   $product = $result->fetch_assoc();
                   echo "<img class='product-image' src=$product[picture_link]>";
-                ?>
-                <!--<img src="../../dist/img/prod-1.jpg" class="product-image" alt="Product Image">-->
-              </div>
-              <div class="col-12 product-image-thumbs">
-                <?php
+                  ?>
+                  <!--<img src="../../dist/img/prod-1.jpg" class="product-image" alt="Product Image">-->
+                </div>
+                <div class="col-12 product-image-thumbs">
+                  <?php
                   echo "<div class='product-image-thumb active'><img src=$product[picture_link]></div>";
                   echo "<div class='product-image-thumb'><img src=https://via.placeholder.com/300/000000?text=2></div>";
                   echo "<div class='product-image-thumb'><img src=https://via.placeholder.com/300/000000?text=3></div>";
-                ?>
-                <!--<div class="product-image-thumb active"><img src="../../dist/img/prod-1.jpg" alt="Product Image"></div>
-                <div class="product-image-thumb" ><img src="../../dist/img/prod-2.jpg" alt="Product Image"></div>
-                <div class="product-image-thumb" ><img src="../../dist/img/prod-3.jpg" alt="Product Image"></div>
-                <div class="product-image-thumb" ><img src="../../dist/img/prod-4.jpg" alt="Product Image"></div>
-                <div class="product-image-thumb" ><img src="../../dist/img/prod-5.jpg" alt="Product Image"></div>-->
+                  ?>
+                  <!--<div class="product-image-thumb active"><img src="../../dist/img/prod-1.jpg" alt="Product Image"></div>
+                  <div class="product-image-thumb" ><img src="../../dist/img/prod-2.jpg" alt="Product Image"></div>
+                  <div class="product-image-thumb" ><img src="../../dist/img/prod-3.jpg" alt="Product Image"></div>
+                  <div class="product-image-thumb" ><img src="../../dist/img/prod-4.jpg" alt="Product Image"></div>
+                  <div class="product-image-thumb" ><img src="../../dist/img/prod-5.jpg" alt="Product Image"></div>-->
+                </div>
               </div>
-            </div>
-            <div class="col-12 col-sm-6">
-              <?php
+              <div class="col-12 col-sm-6">
+                <?php
                 echo <<< PRODUCT_DETAILS
                   <h3 class="my-3">$product[tytul]</h3>
                   <p>$product[opis_short]</p>
@@ -154,7 +120,7 @@
                   </div>
 PRODUCT_DETAILS;
 
-              ?>
+                ?>
               </div>
 
               <div class="mt-4 product-share">
@@ -190,8 +156,8 @@ PRODUCT_DETAILS;
           </div>
         </div>
         <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
+    </div>
+    <!-- /.card -->
 
     </section>
     <!-- /.content -->
@@ -212,6 +178,7 @@ PRODUCT_DETAILS;
   <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
+</div>
 
 <script src="../plugins/jquery/jquery.min.js"></script>
 <script>
