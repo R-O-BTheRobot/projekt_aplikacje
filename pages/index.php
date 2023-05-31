@@ -18,9 +18,20 @@
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body>
-<div class="d-flex justify-content-center">
-  <h1>Sklep z obuwiem</h1>
-</div>
+<nav class="main-header navbar navbar-expand navbar-white d-flex justify-content-between">
+  <!-- Left navbar links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+    </li>
+  </ul>
+  <div class="p-2">
+    <h1>Sklep z obuwiem</h1>
+  </div>
+  <div class="p-2">
+      <a class="nav-link" data-widget="pushmenu" href="./login.php" role="button"><i class="fas fa-user"></i></a>
+  </div>
+</nav>
 <div class="wrapper">
   <aside class="main-sidebar sidebar-dark-primary elevation-4 d-flex align-items-stretch">
     <nav class="d-flex align-items-center">
@@ -100,6 +111,7 @@ GET_PRODUCTS_FROM_DB;
   </div>
 </div>
 </body>
+<script src="../dist/js/adminlte.js"></script>
 </html>
 
 
