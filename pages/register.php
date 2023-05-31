@@ -57,9 +57,25 @@ ERROR;
       <form action="../scripts/register.php" method="post">
 
 
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Imię" name="firstName">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
 
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Podaj email" name="email1">
+          <input type="text" class="form-control" placeholder="Nazwisko" name="lastName">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="email" class="form-control" placeholder="E-mail" name="email1">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -68,7 +84,7 @@ ERROR;
         </div>
 
         <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Podaj hasło" name="pass1">
+          <input type="password" class="form-control" placeholder="Hasło" name="pass1">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
