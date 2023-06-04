@@ -6,9 +6,10 @@
  - Dopracowanie wyglądu strony głównej na bazie znalezionej templatki
 
  Cele sprecyzowane:
- - Wycięcie Aside'a strony głównej i wstawienie innych aside'ów w zależności od tego jaki użytkownik ma dostęp do strony
+ - Wycięcie navbara strony głównej i wstawienie innych navbarów w zależności od tego jaki użytkownik ma dostęp do strony
    W przypadku braku użytkownika (użytkownik niezalogowany) przyjmujemy wartość 1 (user)
  - Wycięcie zawartości z /pages/buty/buty.php i przygotowanie strony do wyświetlania zawartości bazując na HEREDOCu pobierającym dane z bazy danych
  - Edytuj bazę danych aby wspierała 4 kategorie jako typ enum (1 - do biegania, 2 - sportowe, 3 - turystyczne, 4 - codzienne)
    Zmiany powinny być w productsach żeby nie wchodzić w warehouse'a, albo w nowej tabeli i zrobić klucz obcy w productsach
  - Nowa strona typu galeria przyjmująca jeden z 4 parametrów $_GET, zmieniająca zapytanie zgodnie z parametrem get na jeden z 4 typów enum z ww. zmiany w bazie danych
+ - Nowa tabela ze zdjęciami produktów, zdjęcie ma przypisane ID produktów. Zdjęcia wchodzą jako drugorzędne na stronę produktową
