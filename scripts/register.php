@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
   session_start();
 
-  $required_fields = ["firstName", "lastName", "email1",  "pass1","pass2"];
+  $required_fields = ["firstName", "lastName", "email1", "pass1", "pass2"];
 
   $errors = [];
 

@@ -3,13 +3,26 @@
  - zmienna $_SESSION która pozwoli na przechowywanie koszyka
  - możliwość dodawania i usuwania produktów sklepowych przez moderatorów i administratorów
  - Stworzenie strony logowania i rejestracji wraz z ich skryptami
- - Dopracowanie wyglądu strony głównej na bazie znalezionej templatki
 
  Cele sprecyzowane:
- - Wycięcie navbara strony głównej i wstawienie innych navbarów w zależności od tego jaki użytkownik ma dostęp do strony
-   W przypadku braku użytkownika (użytkownik niezalogowany) przyjmujemy wartość 1 (user)
- - Wycięcie zawartości z /pages/buty/buty.php i przygotowanie strony do wyświetlania zawartości bazując na HEREDOCu pobierającym dane z bazy danych
- - Edytuj bazę danych aby wspierała 4 kategorie jako typ enum (1 - do biegania, 2 - sportowe, 3 - turystyczne, 4 - codzienne)
-   Zmiany powinny być w productsach żeby nie wchodzić w warehouse'a, albo w nowej tabeli i zrobić klucz obcy w productsach
- - Nowa strona typu galeria przyjmująca jeden z 4 parametrów $_GET, zmieniająca zapytanie zgodnie z parametrem get na jeden z 4 typów enum z ww. zmiany w bazie danych
+ - Stwórz poziom gościa (użytkownika niezalogowanego, ID 0)
+ - Wycięcie navbara strony głównej i wstawienie innych navbarów w zależności od tego jaki użytkownik ma dostęp do strony    (Done)
+   W przypadku braku użytkownika (użytkownik niezalogowany) przyjmujemy wartość ID 0                                    (Not yet)
  - Nowa tabela ze zdjęciami produktów, zdjęcie ma przypisane ID produktów. Zdjęcia wchodzą jako drugorzędne na stronę produktową
+ - Interfejs administracyjny do zarządzania użytkownikami (update/delete) i możliwość rejestrowania nowych moderatorów/administratorów
+ - Interfejs moderacyjny dla dodawania nowych produktów oraz usuwania i aktualizowania istniejących
+ - Ikonki dla nowych interfejsów w odpowiednich navbarach, obok ikonki logowania (dla zalogowanych zastąp ikonką wylogowania)
+ - Stworzenie zmiennych sesyjnych będących w stanie utrzymać ID użytkownika, ID jego typu, oraz tabelę przedmiotów które ma w koszyku
+ - Dodanie ikonki koszyka dla użytkownika zalogowanego (ID1-3) oraz strony z koszykiem, i miejscem na przycisk finalizacji zakupu
+ - Dodanie miejsca w index.php na chowalny popup z informacją przekazywany przez POST-a, np. o potrzebie aktywacji emaila lub pomyślnej rejestracji
+ - Refaktoryzacja kodu /pages/login.php, /pages/register.php, /scripts/login.php i /scripts/register.php
+
+ Cele dodatkowe:
+
+ Aktywacja przez email:
+ - Dodatkowa zmienna "activated" w tabeli `users`
+ - Nowa prosta strona /pages/activate.php, która wyświetla prosty komunikat o aktywacji konta oraz podmienia jedną zmienną w bazie danych
+ - Po rejestracji, wyślij emaila mailjetem na email na który został zarejestrowany użytkownik. Wyślij link z pierwszymi/ostatnimi X znakami z hasha argon2ID, w ramach zabezpieczenia aktywacji
+
+ SQL Injection:
+ - Sprawdź czy są jakieś zabezpieczenia w istniejącym kodzie
