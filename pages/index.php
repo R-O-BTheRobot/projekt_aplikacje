@@ -17,7 +17,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
-<body>
+<body class="hold-transition">
 <div class="wrapper">
   <?php
     require_once "./content_user/navbar.php";
@@ -62,8 +62,10 @@ GET_PRODUCTS_FROM_DB;
     </section>
   </div>
 </div>
-</body>
+<script src="../plugins/jquery/jquery.min.js"></script>
 <script src="../dist/js/adminlte.js"></script>
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
 
 
