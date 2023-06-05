@@ -14,8 +14,7 @@
  - Ikonki dla nowych interfejsów w odpowiednich navbarach, obok ikonki logowania (dla zalogowanych zastąp ikonką wylogowania)
  - Stworzenie zmiennych sesyjnych będących w stanie utrzymać ID użytkownika, ID jego typu, oraz tabelę przedmiotów które ma w koszyku
  - Dodanie ikonki koszyka dla użytkownika zalogowanego (ID1-3) oraz strony z koszykiem, i miejscem na przycisk finalizacji zakupu
- - Dodanie miejsca w index.php na chowalny popup z informacją przekazywany przez POST-a, np. o potrzebie aktywacji emaila lub pomyślnej rejestracji
- - Refaktoryzacja kodu /pages/login.php, /pages/register.php, /scripts/login.php i /scripts/register.php
+ - Refaktoryzacja kodu /pages/login.php, /pages/register.php, /scripts/login.php i /scripts/register.php (Partial)
 
  Cele dodatkowe:
 

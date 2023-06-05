@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     exit();
   }
 
-  if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])\S{8,}$/', $_POST["pass1"])) {
+  if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\d\s])\S{8,32}$/', $_POST["pass1"])) {
     $_SESSION["error"] = "Hasło nie spełnia wymagań!";
     echo "<script>history.back();</script>";
     exit();

@@ -8,6 +8,6 @@
     <h1>Sklep z obuwiem</h1>
   </div>
   <div class="p-2">
-    <a class="nav-link" data-widget="pushmenu" href="./login.php" role="button"><i class="fas fa-user"></i></a>
+    <a class="nav-link" href="./login.php" role="button"><i class="fas fa-user"></i></a>
   </div>
 </nav>

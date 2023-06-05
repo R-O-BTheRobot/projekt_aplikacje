@@ -2,6 +2,7 @@
 /**
  * @var string $conn
  */
+  session_start();
 ?>
 <html lang="pl">
 <head>
@@ -14,11 +15,14 @@
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
   <!-- Ekko Lightbox -->
   <link rel="stylesheet" href="../plugins/ekko-lightbox/ekko-lightbox.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../plugins/toastr/toastr.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition">
 <div class="wrapper">
+
   <?php
     require_once "./content_user/navbar.php";
   ?>
@@ -28,6 +32,56 @@
   ?>
   <div class="content-wrapper">
     <section class="content">
+      <!-- Modal Popup Conditional -->
+      <?php
+      if (isset($_SESSION["success"]))
+      {
+        echo <<< SUCCESS
+      <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content bg-success">
+            <div class="modal-header">
+              <h5 class="modal-title" id="alertModalLabel">Udało się!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              $_SESSION[success]
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">OK!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+SUCCESS;
+      }
+
+      if (isset($_SESSION["error"]))
+      {
+        echo <<< ERROR
+      <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content bg-danger">
+            <div class="modal-header">
+              <h5 class="modal-title" id="alertModalLabel">Coś poszło nie tak...</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              $_SESSION[error]
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">OK!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+ERROR;
+      }
+      ?>
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -56,6 +110,9 @@
 GET_PRODUCTS_FROM_DB;
                   }
                   ?>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertModal">
+                    Launch demo modal
+                  </button>
                 </div>
               </div>
             </div>
@@ -67,7 +124,31 @@ GET_PRODUCTS_FROM_DB;
 </div>
 <script src="../plugins/jquery/jquery.min.js"></script>
 <script src="../dist/js/adminlte.js"></script>
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../plugins/toastr/toastr.min.js"></script>
+<?php
+  //Logout Toast Script
+  if (isset($_GET["logout"]))
+  {
+    echo <<< LOGOUT
+    <script>toastr.success('Pomyślnie wylogowano!')</script>
+LOGOUT;
+  unset($_GET["logout"]);
+  }
+  //Modal Popup Script
+  if (isset($_SESSION["success"]) || isset($_SESSION["error"]))
+  {
+    echo <<< MODALJS
+<script>
+  $(window).on('load', function() {
+    $('#alertModal').modal('show')
+  })
+</script>
+MODALJS;
+  }
+  unset($_SESSION["success"]);
+  unset($_SESSION["error"]);
+?>
 </body>
 </html>
 

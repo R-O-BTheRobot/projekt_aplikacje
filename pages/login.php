@@ -24,45 +24,30 @@ if (isset($_SESSION["logged"]) && session_status() == 2 && session_id() == $_SES
 <body class="hold-transition login-page">
 <div class="login-box">
   <!-- /.login-logo -->
+  <!-- Modal Popup Conditional -->
   <?php
-  if (isset($_GET["error"])){
+  if (isset($_SESSION["error"]))
+  {
     echo <<< ERROR
-        <div class="callout callout-danger">
-                  <h5>Błąd!</h5>
-                  <p>$_GET[error]</p>
+      <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content bg-danger">
+            <div class="modal-header">
+              <h5 class="modal-title" id="alertModalLabel">Coś poszło nie tak...</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              $_SESSION[error]
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">OK!</button>
+            </div>
+          </div>
         </div>
+      </div>
 ERROR;
-    unset($_GET["error"]);
-  }
-
-  if (isset($_GET["logout"])){
-    echo <<< ERROR
-        <div class="callout callout-info">
-                  <h5>Info!</h5>
-                  <p>Prawidłowo wylogowano użytkownika</p>
-        </div>
-ERROR;
-    unset($_GET["logout"]);
-  }
-
-  if (isset($_SESSION["success"])){
-    echo <<< ERROR
-        <div class="callout callout-success">
-                  <h5>Gratulacje!</h5>
-                  <p>$_SESSION[success]</p>
-        </div>
-ERROR;
-    unset($_SESSION["success"]);
-  }
-
-  if (isset($_SESSION["error"])){
-    echo <<< ERROR
-        <div class="callout callout-danger">
-                  <h5>Błąd!</h5>
-                  <p>$_SESSION[error]</p>
-        </div>
-ERROR;
-    unset($_SESSION["error"]);
   }
   ?>
   <div class="card card-outline card-primary">
@@ -94,21 +79,15 @@ ERROR;
             <div class="icheck-primary">
               <input type="checkbox" id="remember">
               <label for="remember">
-                Nie wylogowuj
+                Zapamiętaj mnie
               </label>
             </div>
           </div>
-          <!-- /.col -->
-
-          <!-- /.col -->
         </div>
       </form>
 
       <div class="social-auth-links text-center mt-2 mb-3">
         <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
-        <a href="#" class="btn btn-block btn-danger">
-          <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-        </a>
       </div>
       <!-- /.social-auth-links -->
 
@@ -116,7 +95,7 @@ ERROR;
         <a href="forgot-password.html">Nie pamiętasz hasła?</a>
       </p>
       <p class="mb-0">
-        Nie masz konta?<a href="register.php" class="text-center">Zarejestruj się</a>
+        Nie masz konta? <a href="register.php" class="text-center">Zarejestruj się!</a>
       </p>
     </div>
     <!-- /.card-body -->
@@ -131,5 +110,19 @@ ERROR;
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
+<!-- Modal Popup Script -->
+<?php
+if (isset($_SESSION["error"]))
+{
+  echo <<< MODALJS
+<script>
+  $(window).on('load', function() {
+    $('#alertModal').modal('show')
+  })
+</script>
+MODALJS;
+}
+unset($_SESSION["error"]);
+?>
 </body>
 </html>
