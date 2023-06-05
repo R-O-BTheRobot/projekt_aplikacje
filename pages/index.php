@@ -24,7 +24,26 @@
 <div class="wrapper">
 
   <?php
-    require_once "./content_none/navbar.php";
+    if(!isset($_SESSION["loggedIn"]["role_id"]))
+    {
+      require_once "./content_none/navbar.php";
+    }
+    else
+    {
+      switch ($_SESSION["loggedIn"]["role_id"])
+      {
+        case 1:
+          require_once "./content_user/navbar.php";
+          break;
+        case 2:
+          require_once "./content_mod/navbar.php";
+          break;
+        case 3:
+          require_once "./content_admin/navbar.php";
+          break;
+      }
+    }
+
   ?>
 
   <?php
@@ -126,6 +145,12 @@ GET_PRODUCTS_FROM_DB;
 <script src="../dist/js/adminlte.js"></script>
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="../plugins/toastr/toastr.min.js"></script>
+<script>
+  //Enable tooltips
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" })
+  })
+</script>
 <?php
   //Logout Toast Script
   if (isset($_GET["logout"]))

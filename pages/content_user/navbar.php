@@ -7,7 +7,8 @@
   <div class="p-2">
     <h1>Sklep z obuwiem</h1>
   </div>
-  <div class="p-2">
-    <a class="nav-link" href="./login.php" role="button" data-toggle="tooltip" data-placement="bottom" title="Zaloguj się"><i class="fas fa-user"></i></a>
+  <div class="p-2 row">
+    <a class="nav-link" href="./checkout.php" role="button" data-toggle="tooltip" data-placement="bottom" title="Koszyk"><i class="fas fa-shopping-cart"></i></a>
+    <a class="nav-link" href="../scripts/logout.php" role="button" data-toggle="tooltip" data-placement="bottom" title="Wyloguj się"><i class="fas fa-sign-out-alt"></i></a>
   </div>
 </nav>

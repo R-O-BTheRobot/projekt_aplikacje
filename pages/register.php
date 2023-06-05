@@ -138,12 +138,6 @@ ERROR;
               </label>
             </div>
           </div>
-
-          <!-- /.col -->
-          <!--<div class="social-auth-links text-center">
-            <button type="submit" class="btn btn-primary btn-block">Załóż konto</button>
-          </div>
-           /.col -->
         </div>
         <div class="social-auth-links text-center">
           <button type="submit" class="btn btn-primary btn-block">Załóż konto</button>

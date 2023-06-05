@@ -5,15 +5,11 @@
  - Stworzenie strony logowania i rejestracji wraz z ich skryptami
 
  Cele sprecyzowane:
- - Wycięcie navbara strony głównej i wstawienie innych navbarów w zależności od tego jaki użytkownik ma dostęp do strony    (Done)
-   W przypadku braku użytkownika (użytkownik niezalogowany) przyjmujemy wartość ID 0                                    (Not yet)
- - Podmień ikonkę logowania na navbarach użytkowników zalogowanych na ikonkę wylogowania
  - Nowa tabela ze zdjęciami produktów, zdjęcie ma przypisane ID produktów. Zdjęcia wchodzą jako drugorzędne na stronę produktową
  - Interfejs administracyjny do zarządzania użytkownikami (update/delete) i możliwość rejestrowania nowych moderatorów/administratorów
  - Interfejs moderacyjny dla dodawania nowych produktów oraz usuwania i aktualizowania istniejących
- - Ikonki dla nowych interfejsów w odpowiednich navbarach, obok ikonki logowania (dla zalogowanych zastąp ikonką wylogowania)
- - Stworzenie zmiennych sesyjnych będących w stanie utrzymać ID użytkownika, ID jego typu, oraz tabelę przedmiotów które ma w koszyku
- - Dodanie ikonki koszyka dla użytkownika zalogowanego (ID1-3) oraz strony z koszykiem, i miejscem na przycisk finalizacji zakupu
+ - Stworzenie zmiennych sesyjnych będących w stanie utrzymać ID użytkownika, ID jego typu, oraz tabelę przedmiotów które ma w koszyku (Partial, user ID and type)
+ - Dodanie strony z koszykiem, i miejscem na przycisk finalizacji zakupu
 
  Cele dodatkowe:
 

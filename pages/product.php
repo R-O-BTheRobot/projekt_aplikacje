@@ -2,6 +2,7 @@
 /**
  * @var string $conn
  */
+  session_start();
 
   if(!isset($_GET["product"]))
     {
@@ -31,10 +32,30 @@
 <body class="hold-transition sidebar-collapse">
 <div class="wrapper">
   <?php
+  if(!isset($_SESSION["loggedIn"]["role_id"]))
+  {
     require_once "./content_none/navbar.php";
+  }
+  else
+  {
+    switch ($_SESSION["loggedIn"]["role_id"])
+    {
+      case 1:
+        require_once "./content_user/navbar.php";
+        break;
+      case 2:
+        require_once "./content_mod/navbar.php";
+        break;
+      case 3:
+        require_once "./content_admin/navbar.php";
+        break;
+    }
+  }
+
   ?>
+
   <?php
-    require_once "./aside.php";
+  require_once "./aside.php";
   ?>
   <!-- Site wrapper -->
   <div class="wrapper">
@@ -142,6 +163,7 @@ PRODUCT_DETAILS;
 
 <script src="../plugins/jquery/jquery.min.js"></script>
 <script>
+  //Replace images
   $(document).ready(function() {
     $('.product-image-thumb').on('click', function () {
       var $image_element = $(this).find('img')
@@ -152,6 +174,12 @@ PRODUCT_DETAILS;
   })
 </script>
 <script src="../dist/js/adminlte.js"></script>
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script>
+  //Enable tooltips
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" })
+  })
+</script>
 </body>
 </html>
