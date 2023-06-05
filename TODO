@@ -1,20 +1,19 @@
  Cele ogólne:
- - 3 poziomy interakcji ze stroną po zalogowaniu, jako klient (kupujący), moderator (zarządzający produktami) i administrator (zarządzający produktami i kontami)
- - zmienna $_SESSION która pozwoli na przechowywanie koszyka
+ - zmienna $_SESSION która pozwoli na przechowywanie koszyka (Partial)
  - możliwość dodawania i usuwania produktów sklepowych przez moderatorów i administratorów
- - Stworzenie strony logowania i rejestracji wraz z ich skryptami
 
  Cele sprecyzowane:
  - Nowa tabela ze zdjęciami produktów, zdjęcie ma przypisane ID produktów. Zdjęcia wchodzą jako drugorzędne na stronę produktową
  - Interfejs administracyjny do zarządzania użytkownikami (update/delete) i możliwość rejestrowania nowych moderatorów/administratorów
  - Interfejs moderacyjny dla dodawania nowych produktów oraz usuwania i aktualizowania istniejących
- - Stworzenie zmiennych sesyjnych będących w stanie utrzymać ID użytkownika, ID jego typu, oraz tabelę przedmiotów które ma w koszyku (Partial, user ID and type)
  - Dodanie strony z koszykiem, i miejscem na przycisk finalizacji zakupu
+ - Sprawdzenie wszystkich pozostałych "edge-case'ów" w /scripts/addcart.php
 
  Cele dodatkowe:
 
  Aktywacja przez email:
  - Dodatkowa zmienna "activated" w tabeli `users`
+   Zmienna umożliwi dokonanie zakupu w koszyku, aktywuje przycisk "Przejdź do płatności" i da mu tooltip "Aktywuj konto aby sfinalizować zakup"
  - Nowa prosta strona /pages/activate.php, która wyświetla prosty komunikat o aktywacji konta oraz podmienia jedną zmienną w bazie danych
  - Po rejestracji, wyślij emaila mailjetem na email na który został zarejestrowany użytkownik. Wyślij link z pierwszymi/ostatnimi X znakami z hasha argon2ID, w ramach zabezpieczenia aktywacji
 

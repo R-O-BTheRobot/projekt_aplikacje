@@ -24,13 +24,14 @@
 <div class="wrapper">
 
   <?php
-    if(!isset($_SESSION["loggedIn"]["role_id"]))
+    if(!isset($_SESSION["loggedIn"]["role_ID"]))
     {
       require_once "./content_none/navbar.php";
+      print_r($_SESSION["loggedIn"]);
     }
     else
     {
-      switch ($_SESSION["loggedIn"]["role_id"])
+      switch ($_SESSION["loggedIn"]["role_ID"])
       {
         case 1:
           require_once "./content_user/navbar.php";

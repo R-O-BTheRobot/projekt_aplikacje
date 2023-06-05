@@ -1,17 +1,21 @@
 <?php
 /**
- * @var string $conn
+ * @var mysqli $conn
  */
   session_start();
 
-  if(!isset($_GET["product"]))
-    {
-      echo "<script>history.back()</script>";
-    }
+  if(!isset($_GET["product"]) || !is_numeric($_GET["product"]))
+  {
+    header("location: ./index.php");
+  }
   require_once("../scripts/dbconnect.php");
   $sql = "SELECT * FROM products WHERE product_id=$_GET[product];";
   $result = $conn->query($sql);
   $product = $result->fetch_assoc();
+  if ($result->num_rows == 0)
+  {
+    header("location: ./index.php");
+  }
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -32,13 +36,13 @@
 <body class="hold-transition sidebar-collapse">
 <div class="wrapper">
   <?php
-  if(!isset($_SESSION["loggedIn"]["role_id"]))
+  if(!isset($_SESSION["loggedIn"]["role_ID"]))
   {
     require_once "./content_none/navbar.php";
   }
   else
   {
-    switch ($_SESSION["loggedIn"]["role_id"])
+    switch ($_SESSION["loggedIn"]["role_ID"])
     {
       case 1:
         require_once "./content_user/navbar.php";
@@ -64,7 +68,56 @@
 
       <!-- Main content -->
       <section class="content">
+        <!-- Modal Popup Conditional -->
+        <?php
+        if (isset($_SESSION["success"]))
+        {
+          echo <<< SUCCESS
+      <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content bg-success">
+            <div class="modal-header">
+              <h5 class="modal-title" id="alertModalLabel">Udało się!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              $_SESSION[success]
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">OK!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+SUCCESS;
+        }
 
+        if (isset($_SESSION["error"]))
+        {
+          echo <<< ERROR
+      <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content bg-danger">
+            <div class="modal-header">
+              <h5 class="modal-title" id="alertModalLabel">Coś poszło nie tak...</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              $_SESSION[error]
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal">OK!</button>
+            </div>
+          </div>
+        </div>
+      </div>
+ERROR;
+        }
+        ?>
         <!-- Default box -->
         <div class="card card-solid">
           <div class="card-body">
@@ -77,7 +130,6 @@
                   $product = $result->fetch_assoc();
                   echo "<img class='product-image' src=$product[picture_link]>";
                   ?>
-                  <!--<img src="../../dist/img/prod-1.jpg" class="product-image" alt="Product Image">-->
                 </div>
                 <div class="col-12 product-image-thumbs">
                   <?php
@@ -85,11 +137,6 @@
                   echo "<div class='product-image-thumb'><img src=https://via.placeholder.com/300/000000?text=2></div>";
                   echo "<div class='product-image-thumb'><img src=https://via.placeholder.com/300/000000?text=3></div>";
                   ?>
-                  <!--<div class="product-image-thumb active"><img src="../../dist/img/prod-1.jpg" alt="Product Image"></div>
-                  <div class="product-image-thumb" ><img src="../../dist/img/prod-2.jpg" alt="Product Image"></div>
-                  <div class="product-image-thumb" ><img src="../../dist/img/prod-3.jpg" alt="Product Image"></div>
-                  <div class="product-image-thumb" ><img src="../../dist/img/prod-4.jpg" alt="Product Image"></div>
-                  <div class="product-image-thumb" ><img src="../../dist/img/prod-5.jpg" alt="Product Image"></div>-->
                 </div>
               </div>
               <div class="col-12 col-sm-6">
@@ -99,27 +146,32 @@
                   <p>$product[opis_short]</p>
                   <hr>
                   <h4 class="mt-3">Rozmiar</h4>
-                  <select class="form-control">
+                  <form action="../scripts/addcart.php" method="POST">
+                    <select title="size" name="size" class="form-control">
+                      <option value="" disabled selected hidden>Wybierz rozmiar...</option>
 PRODUCT_DETAILS;
-                $sql_wh = "SELECT S.size FROM warehouse W INNER JOIN sizes S ON S.size_id = W.size WHERE W.product_id=$_GET[product];";
-                $result_wh = $conn->query($sql_wh);
-                while ($wh = $result_wh->fetch_assoc())
-                {
-                  echo "<option>$wh[size]</option>";
-                }
-                echo <<< PRODUCT_DETAILS
-                  </select>
-                  <div class="bg-gray py-2 px-3 mt-4">
-                    <h2 class="mb-0">
-                      $product[cena] zł
-                    </h2>
-                  </div>
+                  $sql_wh = "SELECT DISTINCT W.product_id, S.size_id, S.size FROM warehouse W INNER JOIN sizes S ON S.size_id = W.size WHERE W.product_id=$_GET[product];";
+                  $result_wh = $conn->query($sql_wh);
+                  while ($wh = $result_wh->fetch_assoc())
+                  {
+                    echo "<option value='$wh[size_id]'>$wh[size]</option>";
+                  }
+                  echo <<< PRODUCT_DETAILS
+                    </select>
+                      <div class="bg-gray py-2 px-3 mt-4">
+                        <h2 class="mb-0">
+                          $product[cena] zł
+                        </h2>
+                    </div>
 
-                  <div class="mt-4">
-                    <div class="btn btn-primary btn-lg btn-flat">
-                      <i class="fas fa-cart-plus fa-lg mr-2"></i>
-                      Dodaj do koszyka
-                  </div>
+                    <input type="hidden" name="product_id" value="$_GET[product]">
+
+                    <div class="mt-4">
+                      <button type="submit" class="btn btn-primary btn-lg btn-flat">
+                        <i class="fas fa-cart-plus fa-lg mr-2"></i>
+                        Dodaj do koszyka
+                      </button>
+                  </form>
 PRODUCT_DETAILS;
 
                 ?>
@@ -181,5 +233,20 @@ PRODUCT_DETAILS;
     $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" })
   })
 </script>
+<?php
+  //Modal Popup Script
+  if (isset($_SESSION["success"]) || isset($_SESSION["error"]))
+  {
+    echo <<< MODALJS
+    <script>
+      $(window).on('load', function() {
+        $('#alertModal').modal('show')
+    })
+    </script>
+MODALJS;
+  }
+  unset($_SESSION["success"]);
+  unset($_SESSION["error"]);
+?>
 </body>
 </html>
