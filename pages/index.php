@@ -1,6 +1,6 @@
 <?php
 /**
- * @var string $conn
+ * @var mysqli $conn
  */
   session_start();
 ?>
@@ -24,7 +24,7 @@
 <div class="wrapper">
 
   <?php
-    require_once "./content_user/navbar.php";
+    require_once "./content_none/navbar.php";
   ?>
 
   <?php

@@ -31,7 +31,7 @@
 <body class="hold-transition sidebar-collapse">
 <div class="wrapper">
   <?php
-    require_once "./content_user/navbar.php";
+    require_once "./content_none/navbar.php";
   ?>
   <?php
     require_once "./aside.php";

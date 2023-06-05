@@ -59,7 +59,7 @@ ERROR;
 
       <form action="../scripts/login.php" method="post">
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="E-mail" name="email">
+          <input type="email" class="form-control" placeholder="E-mail" name="mail">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -84,12 +84,10 @@ ERROR;
             </div>
           </div>
         </div>
+        <div class="social-auth-links text-center mt-2 mb-3">
+          <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
+        </div>
       </form>
-
-      <div class="social-auth-links text-center mt-2 mb-3">
-        <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
-      </div>
-      <!-- /.social-auth-links -->
 
       <p class="mb-1">
         <a href="forgot-password.html">Nie pamiętasz hasła?</a>

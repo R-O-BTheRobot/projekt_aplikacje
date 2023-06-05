@@ -1,61 +1,61 @@
 <?php
+/** @var mysqli $conn */
+/** @var array $rq_field_err */
+
+header("location: ../pages/login.php");
 session_start();
-//print_r($_POST);
-if ($_SERVER["REQUEST_METHOD"] == "POST"){
-  // print_r($_SERVER["REQUEST_METHOD"]);
-  $errors = [];
-  foreach ($_POST as $key => $value){
-    if (empty($value)){
-      $errors[] = "Pole <b>$key</b> musi być wypełnione";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+  $translation_arr = ["mail" => "E-mail", "pass" => "Hasło"];
+  foreach ($_POST as $key => $value)
+  {
+    if (empty($value))
+    {
+      $rq_field_err[] = "Pole <b>$translation_arr[$key]</b> musi być wypełnione!";
     }
   }
-
-  $login = $_POST["email"];
+  $login = $_POST["mail"];
   $pass = $_POST["pass"];
 
-
-
-  if (!empty($errors)){
-    $error_message = implode("<br>", $errors);
-    header("location: ../pages/login.php?error=".urlencode($error_message));
-    exit();
-  }
-
-  require_once "./connect.php";
-  $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
-  $stmt->bind_param("s", $login);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  //echo $result->num_rows;
-
-  if ($result->num_rows != 0){
-    $user = $result->fetch_assoc();
-    //print_r($user);
-    //echo $pass;
-//		echo $user["password"];
-    if (password_verify($pass, $user["password"])){
-      $_SESSION["logged"]["firstName"] = $user["firstName"];
-      $_SESSION["logged"]["lastName"] = $user["lastName"];
-      $_SESSION["logged"]["role_id"] = $user["role_id"];
-      //echo session_id();
-      session_regenerate_id();
-      $_SESSION["logged"]["session_id"] = session_id();
-      //print_r($_SESSION["logged"]);
-      header("location: ../pages/logged.php"); //index2.html
-
-    }else{
-      $_SESSION["error"] = "Błędny login lub hasło!";
-      echo "<script>history.back();</script>";
-      exit();
-    }
-  }else{
-    $_SESSION["error"] = "Błędny login lub hasło!";
+  if (!empty($rq_field_err))
+  {
+    $_SESSION["error"] = implode("<br>", $rq_field_err);
     echo "<script>history.back();</script>";
     exit();
   }
 
-  exit();
+  require_once "../scripts/dbconnect.php";
+  $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+  $stmt->bind_param("s", $login);
+  $stmt->execute();
+  $result = $stmt->get_result();
 
-}else{
-  echo "<script>history.back();</script>";
+  if ($result->num_rows != 0)
+  {
+    $user = $result->fetch_assoc();
+    if (password_verify($pass, $user["password"]))
+    {
+      $_SESSION["loggedIn"]["firstName"] = $user["firstName"];
+      $_SESSION["loggedIn"]["lastName"] = $user["lastName"];
+      $_SESSION["loggedIn"]["role_id"] = $user["role_id"];
+      session_regenerate_id();
+      $_SESSION["loggedIn"]["session_id"] = session_id();
+      $_SESSION["success"] = "Pomyślnie zalogowano!";
+      header("location: ../pages/index.php");
+      exit();
+    }
+    else
+    {
+      $_SESSION["error"] = "Błędny login lub hasło!";
+      echo "<script>history.back();</script>";
+      exit();
+    }
+  }
+  else
+  {
+    $_SESSION["error"] = "Błędny login lub hasło!";
+    echo "<script>history.back();</script>";
+    exit();
+  }
 }

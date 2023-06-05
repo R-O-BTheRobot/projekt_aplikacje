@@ -98,7 +98,7 @@ ERROR;
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="E-mail" name="email1">
+          <input type="email" class="form-control" placeholder="E-mail" name="mail">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -125,9 +125,7 @@ ERROR;
         </div>
         <div>
           <p style="font-size:12px; color:grey;">
-
-
-            Minimum 8 znaków, w tym jedna wielka i mała litera, cyfra i znak specjalny.
+            Min. 8 znaków, maks. 32 znaki, w tym jedna wielka i mała litera, cyfra i znak specjalny.
           </p>
         </div>
 
@@ -163,7 +161,7 @@ ERROR;
 <script src="../plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
+  <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- Modal Popup Script -->
 <?php
