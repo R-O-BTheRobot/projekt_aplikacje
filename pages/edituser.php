@@ -1,22 +1,36 @@
 <?php
-session_start();
-if(!isset($_SESSION["loggedIn"]["role_ID"]))
-{
-  header("location: ./index.php");
-}
-else
-{
-  switch ($_SESSION["loggedIn"]["role_ID"])
+  session_start();
+  /** @var mysqli $conn*/
+
+  if(!isset($_GET["userid"]) || !is_numeric($_GET["userid"]))
   {
-    case 1:
-    case 2:
-      header("location: ./index.php");
-      break;
-    case 3:
-      break;
+    header("location: ./index.php");
   }
-}
-/** @var mysqli $conn*/
+  require_once("../scripts/dbconnect.php");
+  $sql = "SELECT id FROM users WHERE id=$_GET[userid];";
+  $result = $conn->query($sql);
+  $product = $result->fetch_assoc();
+  if ($result->num_rows == 0)
+  {
+    header("location: ./index.php");
+  }
+
+  if(!isset($_SESSION["loggedIn"]["role_ID"]))
+  {
+    header("location: ./index.php");
+  }
+  else
+  {
+    switch ($_SESSION["loggedIn"]["role_ID"])
+    {
+      case 1:
+      case 2:
+        header("location: ./index.php");
+        break;
+      case 3:
+        break;
+    }
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -132,53 +146,62 @@ ERROR;
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="usertab" class="table table-bordered table-hover">
-                  <thead>
-                  <tr>
-                    <th>Imię</th>
-                    <th>Nazwisko</th>
-                    <th>E-mail</th>
-                    <th>Typ</th>
-                    <th>Data utworzenia</th>
-                    <th>Akcja</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                  require_once "../scripts/dbconnect.php";
-                  $sql = "SELECT U.id, U.firstName, U.lastName, U.email, R.role, U.created_at FROM users U INNER JOIN roles R ON R.role_id = U.role_id";
-                  $result = $conn->query($sql);
-                  while ($user = $result->fetch_assoc())
-                  {
-                    echo <<< USER_DATA
+                <form action="../scripts/edituser.php" method="POST">
+                  <?php echo "<input type='hidden' name='user_ID' value='$_GET[userid]'>";?>
+                  <table id="singledata" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Imię</th>
+                        <th>Nazwisko</th>
+                        <th>E-mail</th>
+                        <th>Nowe hasło</th>
+                        <th>Typ</th>
+                        <th>Data utworzenia</th>
+                        <th>Akcja</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      require_once "../scripts/dbconnect.php";
+                      $sql = "SELECT U.id, U.firstName, U.lastName, U.email, R.role, U.created_at FROM users U INNER JOIN roles R ON R.role_id = U.role_id WHERE U.id=$_GET[userid]";
+                      $result = $conn->query($sql);
+                      while ($user = $result->fetch_assoc())
+                      {
+                        echo <<< USER_DATA
                         <tr>
-                            <td>$user[firstName]</td>
-                            <td>$user[lastName]</td>
-                            <td>$user[email]</td>
-                            <td>$user[role]</td>
-                            <td>$user[created_at]</td>
+                            <td><input class="form-control" type="text" name="firstName" value="$user[firstName]"></td>
+                            <td><input class="form-control" type="text" name="lastName" value="$user[lastName]"></td>
+                            <td><input class="form-control" type="email" name="email" value="$user[email]"></td>
+                            <td><input class="form-control" type="password" name="newPass"></td>
                             <td>
-                                <a href="./edituser.php?userid=$user[id]">Edytuj</a><br/>
-                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteuser.php?userid=$user[id]" data-username="$user[firstName] $user[lastName]">Usuń</a>
+                              <select title="role" name="role" class="form-control">
+USER_DATA;
+                        $sql = "SELECT role_id, role FROM roles";
+                        $result = $conn->query($sql);
+                        while ($role = $result->fetch_assoc()){
+                          if($role["role"] == $user["role"])
+                          {
+                            echo "<option selected value='$role[role_id]'>$role[role]</option>";
+                          }
+                          else
+                          {
+                            echo "<option value='$role[role_id]'>$role[role]</option>";
+                          }
+                        }
+                        echo <<< USER_DATA
+                              </select>
                             </td>
+                            <td>$user[created_at]</td>
+                            <td><button type="submit" class="btn btn-primary">Aktualizuj</button></td>
                         </tr>
 USER_DATA;
 
-                  }
+                      }
 
-                  ?>
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Imię</th>
-                    <th>Nazwisko</th>
-                    <th>E-mail</th>
-                    <th>Typ</th>
-                    <th>Data utworzenia</th>
-                    <th>Akcja</th>
-                  </tr>
-                  </tfoot>
-                </table>
+                      ?>
+                    </tbody>
+                  </table>
+                </form>
               </div>
               <!-- /.card-body -->
             </div>
@@ -227,13 +250,18 @@ USER_DATA;
 <script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
-<!-- Creating the proper DataTable -->
+<!-- Page specific script -->
 <script>
   $(function () {
-    $("#usertab").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#usertab_wrapper .col-md-6:eq(0)');
+    $('#singledata').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false,
+      "responsive": true,
+    });
   });
 </script>
 <script>

@@ -7,13 +7,15 @@
 /** @var array $filter_err */
 
 header("location: ../pages/register.php");
+$_SESSION["error"] = "Nie dodano użytkownika. Skontaktuj się z administratorem.";
 
 function sanitizeInput($input){
   $input = htmlentities(stripslashes(trim($input)));
   return $input;
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
   session_start();
 
   $required_fields = ["firstName", "lastName", "mail", "pass1", "pass2"];
@@ -79,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($stmt->affected_rows == 1)
   {
     $_SESSION["success"] = "Prawidowo dodano użytkownika $_POST[firstName] $_POST[lastName]";
+    unset($_SESSION["error"]);
     header("location: ../pages");
     exit();
   }

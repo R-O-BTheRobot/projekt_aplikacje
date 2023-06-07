@@ -3,8 +3,7 @@
  - możliwość dodawania i usuwania produktów sklepowych przez moderatorów i administratorów
 
  Cele sprecyzowane:
- - Interfejs administracyjny do zarządzania użytkownikami (update/delete) i możliwość rejestrowania nowych moderatorów/administratorów (Partial)
- Część druga: interfejs edytujący pewne dane użytkowników, przed usunięciem wystaw komunikat typu "czy napewno chcesz to zrobić?".
+ - Dokończenie /scripts/edituser.php zgodnie z instrukcjami zawartymi w pliku
  - Interfejs moderacyjny dla dodawania nowych produktów oraz usuwania i aktualizowania istniejących
  - Dodanie strony z koszykiem, i miejscem na przycisk finalizacji zakupu
  - Sprawdzenie wszystkich pozostałych "edge-case'ów" w /scripts/addcart.php
@@ -12,10 +11,11 @@
  Cele dodatkowe:
 
  Aktywacja przez email:
- - Dodatkowa zmienna "activated" w tabeli `users` (Partial)
-   Zmienna umożliwi dokonanie zakupu w koszyku, aktywuje przycisk "Przejdź do płatności" i da mu tooltip "Aktywuj konto aby sfinalizować zakup"
- - Nowa prosta strona /pages/activate.php, która wyświetla prosty komunikat o aktywacji konta oraz podmienia jedną zmienną w bazie danych
+ - Dodatkowa zmienna "activated" w tabeli `users` (Done)
+   Zmienna umożliwi dokonanie zakupu w koszyku, aktywuje przycisk "Przejdź do płatności" i da mu tooltip "Aktywuj konto aby sfinalizować zakup" (Partial)
+ - Nowa prosta strona /pages/activate.php, która wyświetla prosty komunikat o aktywacji konta oraz podmienia pole "activated" w tabeli "users"
  - Po rejestracji, wyślij emaila mailjetem na email na który został zarejestrowany użytkownik. Wyślij link z pierwszymi/ostatnimi X znakami z hasha argon2ID, w ramach zabezpieczenia aktywacji
+   SELECT * FROM users WHERE password LIKE '%part_of_argon_hash%'
 
  SQL Injection:
  - Sprawdź czy są jakieś zabezpieczenia w istniejącym kodzie
