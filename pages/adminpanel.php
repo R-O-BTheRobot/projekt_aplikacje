@@ -1,6 +1,6 @@
 <?php
-  session_start();
-  /** @var mysqli $conn*/
+session_start();
+/** @var mysqli $conn*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +20,7 @@
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-collapse">
 <div class="wrapper">
 
   <?php
@@ -48,8 +48,29 @@
   ?>
 
   <?php
-    require_once "./aside.php";
+  require_once "./aside.php";
   ?>
+
+  <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content bg-warning">
+        <div class="modal-header">
+          <h5 class="modal-title" id="warningModalLabel">Uważaj!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Uważaj! Zamierzasz usunąć użytkownika <b><div class="d-inline" id="username"></div></b>.
+          Kontynuować?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
+          <a id="redirect" href="#"><button type="button" class="btn btn-secondary">Usuń</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -77,12 +98,12 @@
                   </thead>
                   <tbody>
                   <?php
-                    require_once "../scripts/dbconnect.php";
-                    $sql = "SELECT U.id, U.firstName, U.lastName, U.email, R.role, U.created_at FROM users U INNER JOIN roles R ON R.role_id = U.role_id";
-                    $result = $conn->query($sql);
-                    while ($user = $result->fetch_assoc())
-                    {
-                      echo <<< USER_DATA
+                  require_once "../scripts/dbconnect.php";
+                  $sql = "SELECT U.id, U.firstName, U.lastName, U.email, R.role, U.created_at FROM users U INNER JOIN roles R ON R.role_id = U.role_id";
+                  $result = $conn->query($sql);
+                  while ($user = $result->fetch_assoc())
+                  {
+                    echo <<< USER_DATA
                         <tr>
                             <td>$user[firstName]</td>
                             <td>$user[lastName]</td>
@@ -91,12 +112,12 @@
                             <td>$user[created_at]</td>
                             <td>
                                 <a href="./edituser.php?userid=$user[id]">Edytuj</a><br/>
-                                <a href="#" data-navlink="../scripts/deleteuser.php?userid=$user[id]">Usuń</a>
+                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteuser.php?userid=$user[id]" data-username="$user[firstName] $user[lastName]">Usuń</a>
                             </td>
                         </tr>
 USER_DATA;
 
-                    }
+                  }
 
                   ?>
                   <!--
@@ -587,6 +608,14 @@ USER_DATA;
       "autoWidth": false,
       "responsive": true,
     });
+  });
+</script>
+<script>
+  $(document).on("click", "#redirectSrc", function () {
+    var redirectUrl = $(this).data('redirect');
+    var username = $(this).data('username');
+    $("#redirect").attr('href', redirectUrl);
+    $("#username").text(username);
   });
 </script>
 </body>
