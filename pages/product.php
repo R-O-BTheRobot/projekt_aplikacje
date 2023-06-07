@@ -133,10 +133,11 @@ ERROR;
                 </div>
                 <div class="col-12 product-image-thumbs">
                   <?php
+                  echo "<div class='product-image-thumb active'><img src=$product[picture_link]></div>";
                   $sql = "SELECT * FROM pictures WHERE product_id=$_GET[product];";
                   $result = $conn->query($sql);
                   while ($pictures = $result->fetch_assoc()){
-                    echo "<div class='product-image-thumb active'><img src=$pictures[picture_link]></div>";
+                    echo "<div class='product-image-thumb'><img src=$pictures[picture_link]></div>";
                   }
                   //echo "<div class='product-image-thumb active'><img src=$product[picture_link]></div>";
                   //echo "<div class='product-image-thumb'><img src=$picture[picture_link]</div>";
