@@ -90,8 +90,8 @@
                             <td>$user[role]</td>
                             <td>$user[created_at]</td>
                             <td>
-                                <a href="#">Edytuj</a><br/>
-                                <a href="#">Usuń</a>
+                                <a href="./edituser.php?userid=$user[id]">Edytuj</a><br/>
+                                <a href="#" data-navlink="../scripts/deleteuser.php?userid=$user[id]">Usuń</a>
                             </td>
                         </tr>
 USER_DATA;

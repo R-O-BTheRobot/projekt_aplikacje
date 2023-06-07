@@ -4,6 +4,7 @@
 
  Cele sprecyzowane:
  - Interfejs administracyjny do zarządzania użytkownikami (update/delete) i możliwość rejestrowania nowych moderatorów/administratorów (Partial)
+ Część druga: interfejs edytujący pewne dane użytkowników, przed usunięciem wystaw komunikat typu "czy napewno chcesz to zrobić?".
  - Interfejs moderacyjny dla dodawania nowych produktów oraz usuwania i aktualizowania istniejących
  - Dodanie strony z koszykiem, i miejscem na przycisk finalizacji zakupu
  - Sprawdzenie wszystkich pozostałych "edge-case'ów" w /scripts/addcart.php
