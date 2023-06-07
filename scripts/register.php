@@ -48,6 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($_POST["pass1"] != $_POST["pass2"])
     $filter_err[] = "Hasła są różne!";
 
+  //Regex for checking password security, based off of https://github.com/szyper's REGEX code, but improved to accept _ as a special character and limited to 32 chars
   if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s])\S{8,32}$/', $_POST["pass1"]))
   {
     $filter_err[] = "Hasło nie spełnia wymagań!";

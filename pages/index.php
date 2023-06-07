@@ -27,7 +27,7 @@
     if(!isset($_SESSION["loggedIn"]["role_ID"]))
     {
       require_once "./content_none/navbar.php";
-      print_r($_SESSION["loggedIn"]);
+      //print_r($_SESSION["loggedIn"]);
     }
     else
     {
@@ -50,6 +50,7 @@
   <?php
     require_once "./aside.php";
   ?>
+
   <div class="content-wrapper">
     <section class="content">
       <!-- Modal Popup Conditional -->
@@ -130,9 +131,9 @@ ERROR;
 GET_PRODUCTS_FROM_DB;
                   }
                   ?>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertModal">
+                  <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertModal">
                     Launch demo modal
-                  </button>
+                  </button>-->
                 </div>
               </div>
             </div>
