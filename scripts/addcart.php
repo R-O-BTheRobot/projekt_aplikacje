@@ -8,9 +8,26 @@ session_start();
 $required_fields = ["size", "product_id"];
 $translation_arr = ["size" => "Rozmiar", "product_id" => "Identyfikator Produktu"];
 
+if($_SERVER["REQUEST_METHOD"]=="POST")
+{
+  foreach ($_POST as $key => $value)  //Change $_POST[name] to $name for simplicity
+  {
+    $$key = $_POST["$key"];
+    //echo $$key;
+  }
+}
+elseif($_SERVER["REQUEST_METHOD"]=="GET")
+{
+  foreach ($_GET as $key => $value)  //Change $_GET[name] to $name for simplicity
+  {
+    $$key = $_GET["$key"];
+    //echo $$key;
+  }
+}
+
 foreach ($required_fields as $value)  //Have all the required fields made it?
 {
-  if (empty($_POST[$value])) {
+  if (empty($$value)) {
     $rq_field_err[] = "Pole <b>$translation_arr[$value]</b> jest wymagane";
   }
 }
@@ -24,11 +41,11 @@ if (!empty($rq_field_err))
 
 require_once "./dbconnect.php";
 $stmt_sid = $conn->prepare("SELECT size_id FROM sizes WHERE size_id=?");
-$stmt_sid->bind_param("i", $_POST["size"]);
+$stmt_sid->bind_param("i", $size);
 $stmt_sid->execute();
 $result_sid = $stmt_sid->get_result();
 $stmt_pid = $conn->prepare("SELECT product_id FROM products WHERE product_id=?");
-$stmt_pid->bind_param("i", $_POST["product_id"]);
+$stmt_pid->bind_param("i", $product_id);
 $stmt_pid->execute();
 $result_pid = $stmt_pid->get_result();
 
@@ -38,11 +55,7 @@ if($result_sid->num_rows == 0 || $result_pid->num_rows == 0)  //Do the required 
   header("location: ../pages/index.php");
   exit();
 }
-foreach ($_POST as $key => $value)  //Change $_POST[name] to $name for simplicity
-{
-  $$key = $_POST["$key"];
-  //echo $$key;
-}
+
 
 if (!isset($_SESSION["cart"]))
 {
@@ -92,6 +105,7 @@ else
           print_r($_SESSION["cart"][$product_id]);
         }
         $_SESSION["success"] = "Produkt został dodany do koszyka!";
+        echo "<script>history.back();</script>";
         exit();
       }
       else
@@ -118,6 +132,7 @@ else
           print_r($_SESSION["cart"][$product_id]);
         }
         $_SESSION["success"] = "Produkt został dodany do koszyka!";
+        echo "<script>history.back();</script>";
         exit();
       }
       else
@@ -145,6 +160,7 @@ else
         print_r($_SESSION["cart"][$product_id]);
       }
       $_SESSION["success"] = "Produkt został dodany do koszyka!";
+      echo "<script>history.back();</script>";
       exit();
     }
     else

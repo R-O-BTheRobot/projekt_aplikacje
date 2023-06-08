@@ -3,17 +3,19 @@
 
  Cele sprecyzowane:
  - Interfejs moderacyjny dla dodawania nowych produktów oraz usuwania i aktualizowania istniejących
- - Przygotowanie templatki koszyka do pobierania danych z $_SESSION["cart"] i bazy danych (Partial)
+ - Skrypt /scripts/pay.php, który usunie wybrane produkty z warehouse'a oraz wrzuci nas na /pages/thankyou.php,
+   która będzie prostą stroną z podziękowaniem za zakup i autoprzekierowaniem na stronę główną
  - Zapobiegnij usunięciu własnego użytkownika
 
  Cele dodatkowe:
 
  Aktywacja przez email:
  - Dodatkowa zmienna "activated" w tabeli `users` (Done)
-   Zmienna umożliwi dokonanie zakupu w koszyku, aktywuje przycisk "Przejdź do płatności" i da mu tooltip "Aktywuj konto aby sfinalizować zakup" (Partial)
+   Zmienna umożliwi dokonanie zakupu w koszyku, aktywuje przycisk "Przejdź do płatności" i da mu tooltip "Aktywuj konto aby sfinalizować zakup" (Not)
  - Nowa prosta strona /pages/activate.php, która wyświetla prosty komunikat o aktywacji konta oraz podmienia pole "activated" w tabeli "users"
  - Po rejestracji, wyślij emaila mailjetem na email na który został zarejestrowany użytkownik. Wyślij link z pierwszymi/ostatnimi X znakami z hasha argon2ID, w ramach zabezpieczenia aktywacji
    SELECT * FROM users WHERE password LIKE '%part_of_argon_hash%'
+ - Dołącz PHPMailer do projektu, który umożliwi wysłanie maila
 
 Opcjonalne:
  - setcookie() po kliknięciu "Zapamiętaj mnie" w /pages/login php

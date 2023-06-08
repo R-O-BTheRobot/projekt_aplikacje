@@ -3,6 +3,7 @@
  * @var mysqli $conn
  */
 session_start();
+$price = 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +19,7 @@ session_start();
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition">
 
 <div class="wrapper">
   <!-- Navbar -->
@@ -106,17 +107,17 @@ ERROR;
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="callout callout-danger">
-              <h5><i class="fas fa-exclamation-triangle"></i> Uwaga!</h5>
-              Twoje zamówienie wykracza poza stany magazynowe. Nie będziemy mogli dostarczyć ci następujących produktów:
-              [Product] Rozmiar: [Size].
-              Ilość w koszyku: [CartAmount]
-              Stan magazynowy: [DBAmount]
-            </div>
-
             <!-- Main content -->
             <div class="invoice p-3 mb-3">
               <!-- title row -->
+              <?php
+                if(!isset($_SESSION["cart"]))
+                {
+                  echo "<div class=row><h3>Twój koszyk jest pusty!</h3></div>";
+                }
+                else
+                {
+                  echo <<< TAB_STRT
               <div class="row">
                 <h3>Twoje zamówienie:</h3>
               </div>
@@ -134,92 +135,109 @@ ERROR;
                     </tr>
                     </thead>
                     <tbody>
-                    <?php
-                      print_r($_SESSION["cart"]);
-                      require_once "../scripts/dbconnect.php";
+TAB_STRT;
+                  //print_r($_SESSION["cart"]);
+                  require_once "../scripts/dbconnect.php";
 
-                      foreach($_SESSION["cart"] as $product_id => $val)
-                      {
-                        foreach(array_count_values($_SESSION["cart"][$product_id]) as $size => $num)
-                        {
-                          $stmt = $conn->prepare("SELECT P.tytul, P.opis_short, P.cena, S.size FROM `warehouse` W INNER JOIN products P ON W.product_id = P.product_id INNER JOIN sizes S ON W.size = S.size_id WHERE W.product_id = ? AND W.size = ?");
-                          $stmt->bind_param("ii", $product_id, $size);
-                          $stmt->execute();
-                          $result = $stmt->get_result();
-                          $product = $result->fetch_assoc();
-                          echo <<< CART_DATA
+                  foreach($_SESSION["cart"] as $product_id => $val)
+                  {
+                    foreach(array_count_values($_SESSION["cart"][$product_id]) as $size => $num)
+                    {
+                      $stmt = $conn->prepare("SELECT P.tytul, P.opis_short, P.cena, S.size FROM `warehouse` W INNER JOIN products P ON W.product_id = P.product_id INNER JOIN sizes S ON W.size = S.size_id WHERE W.product_id = ? AND W.size = ?");
+                      $stmt->bind_param("ii", $product_id, $size);
+                      $stmt->execute();
+                      $result = $stmt->get_result();
+                      $product = $result->fetch_assoc();
+                      $price = $price + ($product["cena"]*$num);
+                      echo <<< CART_DATA
                             <tr>
                               <td>$product[tytul]</td>
                               <td>$product[size]</td>
                               <td>$product[opis_short]</td>
-                              <td>$product[cena]</td>
+                              <td>$product[cena] zł</td>
                               <td class="d-flex align-content-center">
-                                <button class="btn btn-outline-secondary btn-sm">
+                                <a href="../scripts/delcart.php?product_id=$product_id&size=$size">
+                                  <button class="btn btn-outline-secondary btn-sm">
                                     <i class="fa fa-minus"></i>
-                                </button>
+                                  </button>
+                                </a>
                                 <input class="form-control-sm col-2 text-center" type="text" disabled value="$num">
-                                <button class="btn btn-outline-secondary btn-sm">
+                                <a href="../scripts/addcart.php?product_id=$product_id&size=$size">
+                                  <button class="btn btn-outline-secondary btn-sm">
                                     <i class="fa fa-plus"></i>
-                                </button>
+                                  </button>
+                                </a>
                                 <div class="col-1"></div>
-                                <button class="btn btn-outline-danger btn-sm">
+                                <a href="../scripts/delcart.php?product_id=$product_id">
+                                  <button class="btn btn-outline-danger btn-sm">
                                     <i class="fa fa-trash"></i>
-                                </button>
+                                  </button>
+                                </a>
                               </td>
                             </tr>
 CART_DATA;
-                            echo "$product[tytul] - selected: $num, warehouse: $result->num_rows";
-                        }
-                      }
-                      //Quantity I imagine as [-][quantity (noneditable)][+] [trash can]
-                      //- will go to delcart.php and remove a single item, + will go to addcart and add
-                    ?>
-                    <!--<tr>
-                      <td>1</td>
-                      <td>Call of Duty</td>
-                      <td>455-981-221</td>
-                      <td>El snort testosterone trophy driving gloves handsome</td>
-                      <td>$64.50</td>
-                    </tr>-->
+                      //echo "$product[tytul] - selected: $num, warehouse: $result->num_rows";
+                    }
+                  }
+                  echo <<< TAB_FIN
                     </tbody>
                   </table>
                 </div>
                 <!-- /.col -->
               </div>
+TAB_FIN;
+                }
+              ?>
               <!-- /.row -->
 
               <div class="row">
                 <!-- accepted payments column -->
                 <div class="col-6">
-                  <p class="lead">Metody Płatności:</p>
+                  <p class="lead">Dostępne metody płatności:</p>
                   <img src="../dist/img/credit/visa.png" alt="Visa">
                   <img src="../dist/img/credit/mastercard.png" alt="Mastercard">
                   <img src="../dist/img/credit/paypal2.png" alt="Paypal">
                 </div>
                 <!-- /.col -->
                 <div class="col-6">
+                  <?php
+                  $vat = $price-($price/1.23);
+                  $delivery = 15.00;
+                  if($price>=350.00)
+                  {
+                    $delivery = 0.00;
+                  }
+                  $delprice = $price + $delivery;
+                  $price = number_format((float)$price, 2, '.', '');
+                  $vat = number_format((float)$vat, 2, '.', '');
+                  $delivery = number_format((float)$delivery, 2, '.', '');
+                  $delprice = number_format((float)$delprice, 2, '.', '');
+                  if(isset($_SESSION["cart"]))
+                    echo <<< SUBTOTAL
                   <p class="lead">Podsumowanie:</p>
-
                   <div class="table-responsive">
                     <table class="table">
                       <tr>
                         <th style="width:50%">Wartość produktów:</th>
-                        <td>[sum]</td>
+                        <td>$price zł</td>
                       </tr>
                       <tr>
                         <th>Podatek VAT:</th>
-                        <td>[some function to calc 23% VAT idk]</td>
+                        <td>$vat zł</td>
                       </tr>
                       <tr>
                         <th>Koszt dostawy:</th>
-                        <td>[some fixed cost/0 based on order amount]</td>
+                        <td>$delivery zł</td>
                       </tr>
                       <tr>
                         <th>Razem:</th>
-                        <td>[total]</td>
+                        <td>$delprice zł</td>
                       </tr>
                     </table>
                   </div>
+SUBTOTAL;
+
+                  ?>
                 </div>
                 <!-- /.col -->
               </div>
@@ -227,9 +245,34 @@ CART_DATA;
 
               <div class="row">
                 <div class="col-12">
-                  <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
-                    Prejdź do płatności
-                  </button>
+                  <?php
+                  if(!isset($_SESSION["cart"]))
+                    echo <<< PAY_BUTTON
+                    <button type="button" disabled class="btn btn-success float-right"><i class="far fa-credit-card"></i>
+                      Prejdź do płatności
+                    </button>
+PAY_BUTTON;
+                  elseif(!isset($_SESSION["loggedIn"]))
+                    echo <<< PAY_BUTTON
+                    <button type="button" disabled class="btn btn-success float-right"><i class="far fa-credit-card"></i>
+                      Prejdź do płatności
+                    </button>
+PAY_BUTTON;
+                  else
+                  {
+                    echo <<< PAY_BUTTON
+                    <a href="../scripts/pay.php">
+                      <button type="button" disabled class="btn btn-success float-right"><i class="far fa-credit-card"></i>
+                        Prejdź do płatności
+                      </button>
+                    </a>
+PAY_BUTTON;
+
+                  }
+                  //if `activated` == 0
+                  //else button with a redirect link to a page which will delete
+                  //all selected items from the warehouse db
+                  ?>
                 </div>
               </div>
             </div>
