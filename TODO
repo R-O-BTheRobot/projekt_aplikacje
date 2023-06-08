@@ -3,7 +3,8 @@
 
  Cele sprecyzowane:
  - Interfejs moderacyjny dla dodawania nowych produktów oraz usuwania i aktualizowania istniejących
- - Przygotowanie templatki koszyka do pobierania danych z $_SESSION["cart"] i bazy danych
+ - Przygotowanie templatki koszyka do pobierania danych z $_SESSION["cart"] i bazy danych (Partial)
+ - Zapobiegnij usunięciu własnego użytkownika
 
  Cele dodatkowe:
 
@@ -13,6 +14,9 @@
  - Nowa prosta strona /pages/activate.php, która wyświetla prosty komunikat o aktywacji konta oraz podmienia pole "activated" w tabeli "users"
  - Po rejestracji, wyślij emaila mailjetem na email na który został zarejestrowany użytkownik. Wyślij link z pierwszymi/ostatnimi X znakami z hasha argon2ID, w ramach zabezpieczenia aktywacji
    SELECT * FROM users WHERE password LIKE '%part_of_argon_hash%'
+
+Opcjonalne:
  - setcookie() po kliknięciu "Zapamiętaj mnie" w /pages/login php
    później na każdej stronie if(!isset($_SESSION["loggedIn"] && [jest ciasteczko]) require_once skrypt,
    który je odczyta
+ - Redukcja ilości warningów w projekcie
