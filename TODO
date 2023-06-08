@@ -3,7 +3,6 @@
  - możliwość dodawania i usuwania produktów sklepowych przez moderatorów i administratorów
 
  Cele sprecyzowane:
- - Dokończenie /scripts/edituser.php zgodnie z instrukcjami zawartymi w pliku
  - Interfejs moderacyjny dla dodawania nowych produktów oraz usuwania i aktualizowania istniejących
  - Dodanie strony z koszykiem, i miejscem na przycisk finalizacji zakupu
  - Sprawdzenie wszystkich pozostałych "edge-case'ów" w /scripts/addcart.php
@@ -16,6 +15,6 @@
  - Nowa prosta strona /pages/activate.php, która wyświetla prosty komunikat o aktywacji konta oraz podmienia pole "activated" w tabeli "users"
  - Po rejestracji, wyślij emaila mailjetem na email na który został zarejestrowany użytkownik. Wyślij link z pierwszymi/ostatnimi X znakami z hasha argon2ID, w ramach zabezpieczenia aktywacji
    SELECT * FROM users WHERE password LIKE '%part_of_argon_hash%'
-
- SQL Injection:
- - Sprawdź czy są jakieś zabezpieczenia w istniejącym kodzie
+ - setcookie() po kliknięciu "Zapamiętaj mnie" w /pages/login php
+   później na każdej stronie if(!isset($_SESSION["loggedIn"] && [jest ciasteczko]) require_once skrypt,
+   który je odczyta

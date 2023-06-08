@@ -9,9 +9,9 @@
 header("location: ../pages/register.php");
 $_SESSION["error"] = "Nie dodano użytkownika. Skontaktuj się z administratorem.";
 
-function sanitizeInput($input){
-  $input = htmlentities(stripslashes(trim($input)));
-  return $input;
+function sanitizeInput($input):string
+{
+  return htmlentities(stripslashes(trim($input)));
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
@@ -28,7 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
       $$key = sanitizeInput($_POST["$key"]);
   }
 
-  foreach ($required_fields as $value) {
+  foreach ($required_fields as $value)
+  {
     if (empty($_POST[$value])) {
       $rq_field_err[] = "Pole <b>$translation_arr[$value]</b> jest wymagane";
     }
@@ -52,9 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
   //Regex for checking password security, based off of https://github.com/szyper's REGEX code, but improved to accept _ as a special character and limited to 32 chars
   if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s])\S{8,32}$/', $_POST["pass1"]))
-  {
     $filter_err[] = "Hasło nie spełnia wymagań!";
-  }
 
   require_once "./dbconnect.php";
   $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
