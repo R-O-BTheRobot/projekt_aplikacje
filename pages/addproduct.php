@@ -1,5 +1,7 @@
 <?php
 session_start();
+/** @var mysqli $conn*/
+
 if(!isset($_SESSION["loggedIn"]["role_ID"]))
 {
   header("location: ./index.php");
@@ -19,7 +21,6 @@ else
       break;
   }
 }
-/** @var mysqli $conn*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,28 +55,6 @@ else
   <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
-      <!--Modal Popup Warning-->
-      <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content bg-warning">
-            <div class="modal-header">
-              <h5 class="modal-title" id="warningModalLabel">Uważaj!</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Uważaj! Zamierzasz usunąć przedmiot <b><div class="d-inline" id="productname"></div></b>.
-              Kontynuować?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
-              <a id="redirect" href="#"><button type="button" class="btn btn-secondary">Usuń</button></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Modal Popup Conditional -->
       <?php
       if (isset($_SESSION["success"]))
@@ -130,73 +109,57 @@ ERROR;
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header d-flex">
+              <div class="card-header">
                 <h3 class="card-title">Panel zarządzania produktami</h3>
-                <a href="./addproduct.php" class="ml-auto">
-                  <button class="btn btn-success"><i class="fa fa-xs fa-plus"></i> Dodaj nowy produkt</button>
-                </a>
-              </div>
-              <div class="d-flex">
-
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="usertab" class="table table-bordered table-hover">
-                  <thead>
-                  <tr>
-                    <th>Nazwa</th>
-                    <th class="noExport">Główne zdjęcie</th>
-                    <th>Krótki opis</th>
-                    <th>Długi opis</th>
-                    <th>Typ</th>
-                    <th>Cena</th>
-                    <th class="noExport">Akcja</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                  require_once "../scripts/dbconnect.php";
-                  $sql = "SELECT P.tytul, P.product_id, P.picture_link, P.opis_short, P.opis_long, P.cena, T.type FROM `products` P INNER JOIN `type` T ON P.type_id = T.type_id";
-                  $result = $conn->query($sql);
-                  while ($product = $result->fetch_assoc())
-                  {
+                <form action="../scripts/addproduct.php" method="POST" enctype="multipart/form-data">
+                  <table id="singledata" class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                      <th>Nazwa</th>
+                      <th>Główne zdjęcie</th>
+                      <th>Krótki opis</th>
+                      <th>Długi opis</th>
+                      <th>Typ</th>
+                      <th>Cena</th>
+                      <th>Akcja</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php
+                    require_once "../scripts/dbconnect.php";
                     echo <<< USER_DATA
-                        <tr>
-                            <td>$product[tytul]</td>
-                            <td>
-                              <a href="$product[picture_link]" data-toggle="lightbox" data-gallery="gallery">
-                                <img src="$product[picture_link]" alt="$product[opis_short]" width="150">
-                              </a>
+                      <tr>
+                        <td><input class="form-control" type="text" name="tytul" value=""></td>
+                          <td>
+                            <input class="form-control" type="file" accept="image/png, image/jpeg, image/webp" name="picture_link">
+                            <p class="text-muted text-sm well well-sm shadow-none" style="margin-top: 10px;">
+                              Obsługiwane typy plików: JPEG, PNG, WEBP
+                            </p>
+                          </td>
+                          <td><input class="form-control" type="text" name="opis_short" value=""></td>
+                          <td><textarea class="form-control" name="opis_long"></textarea></td>
+                          <td>
+                            <select title="type" name="type" class="form-control">
+                              <option value="" disabled selected hidden>Wybierz typ...</option>
+USER_DATA;
+                    $sql = "SELECT type_id, type FROM type";
+                    $result = $conn->query($sql);
+                    while ($type = $result->fetch_assoc())
+                      echo "<option value='$type[type_id]'>$type[type]</option>";
+                    echo <<< USER_DATA
+                              </select>
                             </td>
-                            <td>$product[opis_short]</td>
-                            <td>$product[opis_long]</td>
-                            <td>$product[type]</td>
-                            <td>$product[cena]</td>
-                            <td>
-                                <a href="./editwarehouse.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Stan magazynowy</button></a>
-                                <a href="./addpicture.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Dodaj zdjęcia</button></a>
-                                <a href="./editproduct.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Edytuj</button></a>
-                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteproduct.php?productid=$product[product_id]" data-productname="$product[tytul]"><button class="btn btn-outline-danger btn-block">Usuń</button></a>
-                            </td>
+                            <td><input class="form-control" type="number" step="0.01" name="cena" value=""></td>
+                            <td><button type="submit" name="submit" class="btn btn-primary">Dodaj</button></td>
                         </tr>
 USER_DATA;
-
-                  }
-
-                  ?>
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Nazwa</th>
-                    <th>Główne zdjęcie</th>
-                    <th>Krótki opis</th>
-                    <th>Długi opis</th>
-                    <th>Typ</th>
-                    <th>Cena</th>
-                    <th>Akcja</th>
-                  </tr>
-                  </tfoot>
-                </table>
+                    ?>
+                    </tbody>
+                  </table>
+                </form>
               </div>
               <!-- /.card-body -->
             </div>
@@ -243,82 +206,32 @@ USER_DATA;
 <script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- Ekko Lightbox -->
-<script src="../plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
-<!-- Creating the proper DataTable -->
+<!-- Page specific script -->
 <script>
   $(function () {
-    $("#usertab").DataTable({
-      "responsive": true,
+    $('#singledata').DataTable({
+      "paging": false,
       "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
       "autoWidth": false,
+      "responsive": true,
       "columnDefs": [
         {"className": "dt-center", "targets": "_all"}
-      ],
-      "buttons": [
-        {
-          extend: "copy",
-          text:"Kopiuj",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "csv",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "excel",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "pdf",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "print",
-          text:"Drukuj",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "colvis",
-          text:"Widoczność kolumn"
-        }]
-    }).buttons().container().appendTo('#usertab_wrapper .col-md-6:eq(0)');
+      ]
+    });
   });
 </script>
 <script>
   $(document).on("click", "#redirectSrc", function () {
     var redirectUrl = $(this).data('redirect');
-    var productname = $(this).data('productname');
+    var username = $(this).data('username');
     $("#redirect").attr('href', redirectUrl);
-    $("#productname").text(productname);
+    $("#username").text(username);
   });
-</script>
-<script>
-  $(function () {
-    $(document).on('click', '[data-toggle="lightbox"]', function(event) {
-      event.preventDefault();
-      $(this).ekkoLightbox({
-        alwaysShowClose: false,
-        showArrows: false
-      });
-    });
-  })
 </script>
 <?php
 //Modal Popup Script

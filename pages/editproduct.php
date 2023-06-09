@@ -69,28 +69,6 @@ else
   <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
-      <!--Modal Popup Warning-->
-      <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content bg-warning">
-            <div class="modal-header">
-              <h5 class="modal-title" id="warningModalLabel">Uważaj!</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              Uważaj! Zamierzasz usunąć użytkownika <b><div class="d-inline" id="username"></div></b>.
-              Kontynuować?
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
-              <a id="redirect" href="#"><button type="button" class="btn btn-secondary">Usuń</button></a>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <!-- Modal Popup Conditional -->
       <?php
       if (isset($_SESSION["success"]))

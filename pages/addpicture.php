@@ -211,7 +211,7 @@ USER_DATA;
                   <tr>
                     <td colspan="2">
                       <a href="#formModal" data-toggle="modal">
-                        <button class="btn btn-primary"><i class="fa fa-plus"></i> Dodaj zdjęcie</button>
+                        <button class="btn btn-primary"><i class="fa fa-xs fa-plus"></i> Dodaj zdjęcie</button>
                       </a>
                     </td>
                   </tr>

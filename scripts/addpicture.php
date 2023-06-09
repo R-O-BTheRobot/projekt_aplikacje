@@ -25,53 +25,57 @@ else
   $prod = $resultsel->fetch_assoc();
 }
 
-if(!empty($_FILES["secondaryPicture"]["name"]) && !empty($_FILES['secondaryPicture']['tmp_name']))
+if(empty($_FILES["secondaryPicture"]["name"]) && empty($_FILES['secondaryPicture']['tmp_name']))
 {
-  $target_dir = "../dist/upload/";
-  $target_file = $target_dir . basename($_FILES["secondaryPicture"]["name"]);
-  $uploadOk = 1;
-  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  $_SESSION["error"] = "Nie wybrano żadnego zdjęcia!";
+  echo "<script>history.back()</script>";
+  exit();
+}
 
-  // Check if image file is a actual image or fake image
-  if(isset($_POST["submit"])) {
-    $check = getimagesize($_FILES["secondaryPicture"]["tmp_name"]);
-    if($check !== false) {
-      echo "File is an image - " . $check["mime"] . ".";
-      $uploadOk = 1;
-    } else {
-      $file_err[] = "Plik nie jest plikiem obrazu!";
-      $uploadOk = 0;
-    }
-  }
+$target_dir = "../dist/upload/";
+$target_file = $target_dir . basename($_FILES["secondaryPicture"]["name"]);
+$uploadOk = 1;
+$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-  // Check if file already exists
-  if (file_exists($target_file)) {
-    $file_err[] = "Plik już istnieje!";
-    $uploadOk = 0;
-  }
-
-  // Check file size
-  if ($_FILES["secondaryPicture"]["size"] > 500000) {
-    $file_err[] = "Plik jest zbyt duży!";
-    $uploadOk = 0;
-  }
-
-  // Allow certain file formats
-  if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "webp" ) {
-    $file_err[] = "Plik powinien mieć rozszerzenie JPG, JPEG, PNG bądź WEBP!";
-    $uploadOk = 0;
-  }
-
-  // Check if $uploadOk is set to 0 by an error
-  if ($uploadOk == 0) {
-    echo "Sorry, your file was not uploaded.";
-    // if everything is ok, try to upload file
+// Check if image file is a actual image or fake image
+if(isset($_POST["submit"])) {
+  $check = getimagesize($_FILES["secondaryPicture"]["tmp_name"]);
+  if($check !== false) {
+    echo "File is an image - " . $check["mime"] . ".";
+    $uploadOk = 1;
   } else {
-    if (move_uploaded_file($_FILES["secondaryPicture"]["tmp_name"], $target_file)) {
-      echo "The file ". htmlspecialchars( basename( $_FILES["secondaryPicture"]["name"])). " has been uploaded.";
-    } else {
-      $file_err[] = "Błąd przesyłania pliku.";
-    }
+    $file_err[] = "Plik nie jest plikiem obrazu!";
+    $uploadOk = 0;
+  }
+}
+
+// Check if file already exists
+if (file_exists($target_file)) {
+  $file_err[] = "Plik już istnieje!";
+  $uploadOk = 0;
+}
+
+// Check file size
+if ($_FILES["secondaryPicture"]["size"] > 500000) {
+  $file_err[] = "Plik jest zbyt duży!";
+  $uploadOk = 0;
+}
+
+// Allow certain file formats
+if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "webp" ) {
+  $file_err[] = "Plik powinien mieć rozszerzenie JPG, JPEG, PNG bądź WEBP!";
+  $uploadOk = 0;
+}
+
+// Check if $uploadOk is set to 0 by an error
+if ($uploadOk == 0) {
+  echo "Sorry, your file was not uploaded.";
+  // if everything is ok, try to upload file
+} else {
+  if (move_uploaded_file($_FILES["secondaryPicture"]["tmp_name"], $target_file)) {
+    echo "The file ". htmlspecialchars( basename( $_FILES["secondaryPicture"]["name"])). " has been uploaded.";
+  } else {
+    $file_err[] = "Błąd przesyłania pliku.";
   }
 }
 
