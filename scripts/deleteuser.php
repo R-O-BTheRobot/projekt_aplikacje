@@ -27,6 +27,12 @@
     exit();
   }
 
+  if($_SESSION["loggedIn"]["user_ID"] == $_GET["userid"])
+  {
+    $_SESSION["error"] = "Nie możesz usunąć swojego konta!";
+    exit();
+  }
+
   $sql = "DELETE FROM users WHERE id = $_GET[userid]";
   $conn->query($sql);
   if ($conn->affected_rows == 1)

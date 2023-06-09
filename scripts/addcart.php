@@ -81,16 +81,16 @@ if (!isset($_SESSION["cart"]))
 }
 else
 {
-  $stmt = $conn->prepare("SELECT item_id FROM warehouse WHERE product_id=? AND size=?;");
+  $stmt = $conn->prepare("SELECT count FROM warehouse WHERE product_id=? AND size=?;");
   $stmt->bind_param("ii", $product_id, $size);
   $stmt->execute();
-  $result = $stmt->get_result();
+  $result = $stmt->get_result()->fetch_assoc();
   if(isset($_SESSION["cart"][$product_id]))
   {
     $count = array_count_values($_SESSION["cart"][$product_id]);
     if(isset($count[$size]))
     {
-      if($result->num_rows != 0 && $count[$size]+1 <= $result->num_rows)
+      if($result["count"] != 0 && $count[$size]+1 <= $result["count"])
       {
         if(isset($_SESSION["cart"][$product_id]))
         {

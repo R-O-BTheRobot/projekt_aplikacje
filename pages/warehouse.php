@@ -1,5 +1,20 @@
 <?php
 session_start();
+/** @var mysqli $conn*/
+
+if(!isset($_GET["productid"]) || !is_numeric($_GET["productid"]))
+{
+  header("location: ./index.php");
+}
+require_once("../scripts/dbconnect.php");
+$sql = "SELECT product_id FROM products WHERE product_id=$_GET[productid];";
+$result = $conn->query($sql);
+$product = $result->fetch_assoc();
+if ($result->num_rows == 0)
+{
+  header("location: ./index.php");
+}
+
 if(!isset($_SESSION["loggedIn"]["role_ID"]))
 {
   header("location: ./index.php");
@@ -19,7 +34,6 @@ else
       break;
   }
 }
-/** @var mysqli $conn*/
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,7 +79,7 @@ else
               </button>
             </div>
             <div class="modal-body">
-              Uważaj! Zamierzasz usunąć przedmiot <b><div class="d-inline" id="productname"></div></b>.
+              Uważaj! Zamierzasz usunąć rozmiar <b><div class="d-inline" id="size"></div></b> produktu <b><div class="d-inline" id="productname"></div></b> z magazynu.
               Kontynuować?
             </div>
             <div class="modal-footer">
@@ -132,8 +146,8 @@ ERROR;
             <div class="card">
               <div class="card-header d-flex">
                 <h3 class="card-title">Panel zarządzania produktami</h3>
-                <a href="./addproduct.php" class="ml-auto">
-                  <button class="btn btn-success"><i class="fa fa-xs fa-plus"></i> Dodaj nowy produkt</button>
+                <a href="#" class="ml-auto">
+                  <button class="btn btn-success"><i class="fa fa-xs fa-plus"></i> Dodaj nowy rozmiar</button>
                 </a>
               </div>
               <div class="d-flex">
@@ -144,39 +158,29 @@ ERROR;
                 <table id="usertab" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Nazwa</th>
-                    <th class="noExport">Główne zdjęcie</th>
-                    <th>Krótki opis</th>
-                    <th>Długi opis</th>
-                    <th>Typ</th>
-                    <th>Cena</th>
+                    <th>Rozmiar</th>
+                    <th>Ilość</th>
                     <th class="noExport">Akcja</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php
                   require_once "../scripts/dbconnect.php";
-                  $sql = "SELECT P.tytul, P.product_id, P.picture_link, P.opis_short, P.opis_long, P.cena, T.type FROM `products` P INNER JOIN `type` T ON P.type_id = T.type_id";
+                  $sql = "SELECT W.product_id, P.tytul, S.size, S.size_id, W.count FROM `warehouse` W INNER JOIN sizes S ON S.size_id=W.size INNER JOIN products P ON P.product_id = W.product_id WHERE W.product_id=$_GET[productid]";
                   $result = $conn->query($sql);
-                  while ($product = $result->fetch_assoc())
+                  while ($warehouse = $result->fetch_assoc())
                   {
                     echo <<< USER_DATA
-                        <tr>
-                            <td>$product[tytul]</td>
+                        <tr id="$warehouse[size_id]">
                             <td>
-                              <a href="$product[picture_link]" data-toggle="lightbox" data-gallery="gallery">
-                                <img src="$product[picture_link]" alt="$product[opis_short]" width="150">
-                              </a>
+                              <form action="../scripts/editwh.php" method="POST">
+                                $warehouse[size]
                             </td>
-                            <td>$product[opis_short]</td>
-                            <td>$product[opis_long]</td>
-                            <td>$product[type]</td>
-                            <td>$product[cena]</td>
-                            <td>
-                                <a href="./warehouse.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Stan magazynowy</button></a>
-                                <a href="./addpicture.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Dodaj zdjęcia</button></a>
-                                <a href="./editproduct.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Edytuj</button></a>
-                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteproduct.php?productid=$product[product_id]" data-productname="$product[tytul]"><button class="btn btn-outline-danger btn-block">Usuń</button></a>
+                            <td><input type="number" class="form-control count" disabled name="count" value="$warehouse[count]"></td>
+                            <td class="d=flex">
+                                <button type="button" class="btn btn-outline-primary submitbtn" data-id="$warehouse[size_id]">Zmień wartości</button>
+                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deletewh.php?productid=$warehouse[product_id]&size=$warehouse[size]" data-size="$warehouse[size]" data-productname="$warehouse[tytul]"><button class="btn btn-outline-danger">Usuń</button></a>
+                              </form>
                             </td>
                         </tr>
 USER_DATA;
@@ -187,13 +191,6 @@ USER_DATA;
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>Nazwa</th>
-                    <th>Główne zdjęcie</th>
-                    <th>Krótki opis</th>
-                    <th>Długi opis</th>
-                    <th>Typ</th>
-                    <th>Cena</th>
-                    <th>Akcja</th>
                   </tr>
                   </tfoot>
                 </table>
@@ -305,9 +302,25 @@ USER_DATA;
 <script>
   $(document).on("click", "#redirectSrc", function () {
     var redirectUrl = $(this).data('redirect');
+    var size = $(this).data('size');
     var productname = $(this).data('productname');
     $("#redirect").attr('href', redirectUrl);
+    $("#size").text(size);
     $("#productname").text(productname);
+  });
+</script>
+<script>
+  $(document).on("mouseup", ".submitbtn", function () {
+    var wh_id = $(this).data('id');
+    $(".submitbtn").attr('type', 'button');
+    $(".submitbtn").text("Zmień wartości");
+    $(".count").prop('disabled', true)
+    setTimeout(function ()
+    {
+      $("#"+wh_id+" .count").prop('disabled', false);
+      $("#"+wh_id+" .submitbtn").attr('type', 'submit');
+      $("#"+wh_id+" .submitbtn").text("Aktualizuj");
+    }, 10)
   });
 </script>
 <script>

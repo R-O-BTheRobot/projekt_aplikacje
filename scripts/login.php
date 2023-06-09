@@ -39,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
       $_SESSION["loggedIn"]["firstName"] = $user["firstName"];
       $_SESSION["loggedIn"]["lastName"] = $user["lastName"];
       $_SESSION["loggedIn"]["role_ID"] = $user["role_id"];
+      $_SESSION["loggedIn"]["user_ID"] = $user["id"];
       session_regenerate_id();
       $_SESSION["loggedIn"]["session_ID"] = session_id();
       $_SESSION["success"] = "Pomyślnie zalogowano!";
