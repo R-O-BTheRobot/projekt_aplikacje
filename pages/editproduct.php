@@ -135,7 +135,7 @@ ERROR;
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <form action="../scripts/editproduct.php" method="POST">
+                <form action="../scripts/editproduct.php" method="POST" enctype="multipart/form-data">
                   <?php echo "<input type='hidden' name='product_id' value='$_GET[productid]'>";?>
                   <table id="singledata" class="table table-bordered table-hover">
                     <thead>
@@ -158,10 +158,15 @@ ERROR;
                       {
                         echo <<< USER_DATA
                         <tr>
-                            <td><input class="form-control" type="text" name="firstName" value="$product[tytul]"></td>
-                            <td><input class="form-control" type="text" name="lastName" value="">picture_link</td>
-                            <td><input class="form-control" type="email" name="email" value="$product[opis_short]"></td>
-                            <td><input class="form-control" type="email" name="email" value="$product[opis_long]"></td>
+                            <td><input class="form-control" type="text" name="tytul" value="$product[tytul]"></td>
+                            <td>
+                              <input class="form-control" type="file" accept="image/png, image/jpeg, image/webp" name="picture_link">
+                              <p class="text-muted text-sm well well-sm shadow-none" style="margin-top: 10px;">
+                                Obsługiwane typy plików: JPEG, PNG, WEBP
+                              </p>
+                            </td>
+                            <td><input class="form-control" type="text" name="opis_short" value="$product[opis_short]"></td>
+                            <td><textarea class="form-control" name="opis_long">$product[opis_long]</textarea></td>
                             <td>
                               <select title="type" name="type" class="form-control">
 USER_DATA;
@@ -180,7 +185,7 @@ USER_DATA;
                         echo <<< USER_DATA
                               </select>
                             </td>
-                            <td><input class="form-control" type="email" name="email" value="$product[cena]"></td>
+                            <td><input class="form-control" type="number" step="0.01" name="cena" value="$product[cena]"></td>
                             <td><button type="submit" class="btn btn-primary">Aktualizuj</button></td>
                         </tr>
 USER_DATA;

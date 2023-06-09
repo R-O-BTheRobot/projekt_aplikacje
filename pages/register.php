@@ -124,7 +124,7 @@ ERROR;
           </div>
         </div>
         <div>
-          <p style="font-size:12px; color:grey;">
+          <p class="text-muted text-xs">
             Min. 8 znaków, maks. 32 znaki, w tym jedna wielka i mała litera, cyfra i znak specjalny.
           </p>
         </div>
@@ -144,7 +144,7 @@ ERROR;
         </div>
       </form>
 
-      <a href="./" class="text-center">Mam konto</a>
+      <a href="./login.php" class="text-center">Mam konto</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->
