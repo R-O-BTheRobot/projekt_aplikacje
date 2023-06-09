@@ -1,6 +1,9 @@
 # Local script to update the repository every few minutes #
 update_repo.sh
 
+# /dist/upload is the go-to folder for uploaded files
+/dist/upload/
+
 # System / Log files
 *.DS_Store
 *.log
