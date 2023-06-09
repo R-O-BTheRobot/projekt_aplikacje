@@ -65,7 +65,7 @@ else
               </button>
             </div>
             <div class="modal-body">
-              Uważaj! Zamierzasz usunąć przedmiot <b><div class="d-inline" id="productname"></div></b>.
+              Uważaj! Zamierzasz usunąć użytkownika <b><div class="d-inline" id="username"></div></b>.
               Kontynuować?
             </div>
             <div class="modal-footer">
@@ -135,58 +135,62 @@ ERROR;
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="usertab" class="table table-bordered table-hover">
-                  <thead>
-                  <tr>
-                    <th>Nazwa</th>
-                    <th class="noExport">Główne zdjęcie</th>
-                    <th>Krótki opis</th>
-                    <th>Długi opis</th>
-                    <th>Typ</th>
-                    <th>Cena</th>
-                    <th class="noExport">Akcja</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                  require_once "../scripts/dbconnect.php";
-                  $sql = "SELECT P.tytul, P.product_id, P.picture_link, P.opis_short, P.opis_long, P.cena, T.type FROM `products` P INNER JOIN `type` T ON P.type_id = T.type_id";
-                  $result = $conn->query($sql);
-                  while ($product = $result->fetch_assoc())
-                  {
-                    echo <<< USER_DATA
+                <form action="../scripts/editproduct.php" method="POST">
+                  <?php echo "<input type='hidden' name='product_id' value='$_GET[productid]'>";?>
+                  <table id="singledata" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Nazwa</th>
+                        <th>Główne zdjęcie</th>
+                        <th>Krótki opis</th>
+                        <th>Długi opis</th>
+                        <th>Typ</th>
+                        <th>Cena</th>
+                        <th>Akcja</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <?php
+                      require_once "../scripts/dbconnect.php";
+                      $sql = "SELECT * FROM products WHERE product_id=$_GET[productid]";
+                      $result = $conn->query($sql);
+                      while ($product = $result->fetch_assoc())
+                      {
+                        echo <<< USER_DATA
                         <tr>
-                            <td>$product[tytul]</td>
-                            <td><img src="$product[picture_link]" alt="$product[opis_short]" width="150"></td>
-                            <td>$product[opis_short]</td>
-                            <td>$product[opis_long]</td>
-                            <td>$product[type]</td>
-                            <td>$product[cena]</td>
+                            <td><input class="form-control" type="text" name="firstName" value="$product[tytul]"></td>
+                            <td><input class="form-control" type="text" name="lastName" value="">picture_link</td>
+                            <td><input class="form-control" type="email" name="email" value="$product[opis_short]"></td>
+                            <td><input class="form-control" type="email" name="email" value="$product[opis_long]"></td>
                             <td>
-                                <a href="./editwarehouse.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Stan magazynowy</button></a>
-                                <a href="./addphoto.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Dodaj zdjęcia</button></a>
-                                <a href="./editproduct.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Edytuj</button></a>
-                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteproduct.php?productid=$product[product_id]" data-productname="$product[tytul]"><button class="btn btn-outline-danger btn-block">Usuń</button></a>
+                              <select title="type" name="type" class="form-control">
+USER_DATA;
+                        $sql = "SELECT type_id, type FROM type";
+                        $result = $conn->query($sql);
+                        while ($type = $result->fetch_assoc()){
+                          if($type["type_id"] == $product["type_id"])
+                          {
+                            echo "<option selected value='$type[type_id]'>$type[type]</option>";
+                          }
+                          else
+                          {
+                            echo "<option value='$type[type_id]'>$type[type]</option>";
+                          }
+                        }
+                        echo <<< USER_DATA
+                              </select>
                             </td>
+                            <td><input class="form-control" type="email" name="email" value="$product[cena]"></td>
+                            <td><button type="submit" class="btn btn-primary">Aktualizuj</button></td>
                         </tr>
 USER_DATA;
 
-                  }
+                      }
 
-                  ?>
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Nazwa</th>
-                    <th>Główne zdjęcie</th>
-                    <th>Krótki opis</th>
-                    <th>Długi opis</th>
-                    <th>Typ</th>
-                    <th>Cena</th>
-                    <th>Akcja</th>
-                  </tr>
-                  </tfoot>
-                </table>
+                      ?>
+                    </tbody>
+                  </table>
+                </form>
               </div>
               <!-- /.card-body -->
             </div>
@@ -235,61 +239,26 @@ USER_DATA;
 <script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
-<!-- Creating the proper DataTable -->
+<!-- Page specific script -->
 <script>
   $(function () {
-    $("#usertab").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": [
-        {
-          extend: "copy",
-          text:"Kopiuj",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "csv",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "excel",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "pdf",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "print",
-          text:"Drukuj",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "colvis",
-          text:"Widoczność kolumn"
-        }]
-    }).buttons().container().appendTo('#usertab_wrapper .col-md-6:eq(0)');
+    $('#singledata').DataTable({
+      "paging": false,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
+      "autoWidth": false,
+      "responsive": true,
+    });
   });
 </script>
 <script>
   $(document).on("click", "#redirectSrc", function () {
     var redirectUrl = $(this).data('redirect');
-    var productname = $(this).data('productname');
+    var username = $(this).data('username');
     $("#redirect").attr('href', redirectUrl);
-    $("#productname").text(productname);
+    $("#username").text(username);
   });
 </script>
 <?php

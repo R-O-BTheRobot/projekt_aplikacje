@@ -140,7 +140,7 @@ ERROR;
                     <th>E-mail</th>
                     <th>Typ</th>
                     <th>Data utworzenia</th>
-                    <th>Akcja</th>
+                    <th class="noExport">Akcja</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -157,9 +157,9 @@ ERROR;
                             <td>$user[email]</td>
                             <td>$user[role]</td>
                             <td>$user[created_at]</td>
-                            <td>
-                                <a href="./edituser.php?userid=$user[id]">Edytuj</a><br/>
-                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteuser.php?userid=$user[id]" data-username="$user[firstName] $user[lastName]">Usuń</a>
+                            <td class="d-flex">
+                                <a href="./edituser.php?userid=$user[id]"><button class="btn btn-outline-primary">Edytuj</button></a><br/>
+                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteuser.php?userid=$user[id]" data-username="$user[firstName] $user[lastName]"><button class="btn btn-outline-danger">Usuń</button></a>
                             </td>
                         </tr>
 USER_DATA;
@@ -232,7 +232,47 @@ USER_DATA;
   $(function () {
     $("#usertab").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      "buttons": [
+        {
+          extend: "copy",
+          text:"Kopiuj",
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: "csv",
+          title: "SklepXYZ_Użytkownicy",
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: "excel",
+          title: "SklepXYZ_Użytkownicy",
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: "pdf",
+          title: "SklepXYZ_Użytkownicy",
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: "print",
+          text:"Drukuj",
+          title: "SklepXYZ_Użytkownicy",
+          exportOptions: {
+            columns: ':not(.noExport)'
+          }
+        },
+        {
+          extend: "colvis",
+          text:"Widoczność kolumn"
+        }]
     }).buttons().container().appendTo('#usertab_wrapper .col-md-6:eq(0)');
   });
 </script>

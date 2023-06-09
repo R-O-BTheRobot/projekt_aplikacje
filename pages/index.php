@@ -114,17 +114,17 @@ ERROR;
                 <div class="row">
                   <?php
                   require_once "../scripts/dbconnect.php";
-                  $sql = "SELECT * FROM `products`";
+                  $sql = "SELECT P.product_id, P.picture_link, T.type FROM `products` P INNER JOIN `type` T ON P.type_id = T.type_id";
                   if(isset($_GET["sort"]) && ($_GET["sort"] == "biegowe" || $_GET["sort"] == "sportowe" || $_GET["sort"] == "turystyczne" || $_GET["sort"] == "codzienne"))
                   {
-                    $sql = "SELECT * FROM `products` WHERE `typ` = '$_GET[sort]'";
+                    $sql = "SELECT P.product_id, P.picture_link, T.type FROM `products` P INNER JOIN `type` T ON P.type_id = T.type_id WHERE T.`type`='$_GET[sort]'";
                   }
                   $result = $conn->query($sql);
                   while ($product = $result->fetch_assoc())
                   {
                     echo <<< GET_PRODUCTS_FROM_DB
                     <div class="col-sm-2">
-                        <a href="./product.php?product=$product[product_id]" data-toggle="lightbox" data-title="$product[typ]" data-gallery="gallery">
+                        <a href="./product.php?product=$product[product_id]" data-toggle="lightbox" data-title="$product[type]" data-gallery="gallery">
                                 <img src="$product[picture_link]" class="img-fluid mb-2" alt="Zdjęcie produktu $product[product_id]">
                         </a>
                     </div>
