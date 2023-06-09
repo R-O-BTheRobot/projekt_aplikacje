@@ -1,5 +1,20 @@
 <?php
 session_start();
+/** @var mysqli $conn*/
+
+if(!isset($_GET["productid"]) || !is_numeric($_GET["productid"]))
+{
+  header("location: ./index.php");
+}
+require_once("../scripts/dbconnect.php");
+$sql = "SELECT product_id FROM products WHERE product_id=$_GET[productid];";
+$result = $conn->query($sql);
+$product = $result->fetch_assoc();
+if ($result->num_rows == 0)
+{
+  header("location: ./index.php");
+}
+
 if(!isset($_SESSION["loggedIn"]["role_ID"]))
 {
   header("location: ./index.php");
@@ -255,6 +270,9 @@ USER_DATA;
       "info": false,
       "autoWidth": false,
       "responsive": true,
+      "columnDefs": [
+        {"className": "dt-center", "targets": "_all"}
+      ]
     });
   });
 </script>

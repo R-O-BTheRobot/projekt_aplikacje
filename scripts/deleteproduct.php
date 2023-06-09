@@ -11,7 +11,7 @@
     exit();
   }
 
-  $sqlsel = "SELECT tytul FROM products WHERE product_id=$_GET[productid]";
+  $sqlsel = "SELECT tytul, picture_link FROM products WHERE product_id=$_GET[productid]";
   $resultsel = $conn->query($sqlsel);
 
   if ($resultsel->num_rows != 1)
@@ -26,12 +26,14 @@
 
   $sqlwh = "DELETE FROM warehouse WHERE product_id = $_GET[productid]";
   $conn->query($sqlwh);
+  $sqlpic = "DELETE FROM pictures WHERE product_id = $_GET[productid]";
+  $conn->query($sqlpic);
   $sqlprod = "DELETE FROM products WHERE product_id = $_GET[productid]";
   $conn->query($sqlprod);
   if ($conn->affected_rows == 1)
   {
-    //echo "Rekord usunięty pomyślnie!";
     $_SESSION["success"] = "Pomyślnie usunięto produkt $prod[tytul]";
+    unlink(realpath($prod["picture_link"]));
   }
   else
   {

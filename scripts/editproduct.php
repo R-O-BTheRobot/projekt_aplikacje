@@ -19,13 +19,17 @@
       exit();
     }
 
-    $sql = "SELECT product_id FROM products WHERE product_id=$_POST[product_id]";
+    $sql = "SELECT product_id, picture_link FROM products WHERE product_id=$_POST[product_id]";
     $result = $conn->query($sql);
     if ($result->num_rows != 1)
     {
       $_SESSION["error"] = "Identyfikator Produktu jest błędny. Skontaktuj się z administratorem.";
       echo "<script>history.back();</script>";
       exit();
+    }
+    else
+    {
+      $prod = $result->fetch_assoc();
     }
 
     $translation_arr = ["product_id" => "Identyfikator Produktu", "tytul" => "Nazwa", "opis_short" => "Krótki opis", "opis_long" => "Długi opis", "type" => "Typ", "picture_link" => "Główne zdjęcie", "cena" => "Cena"];
@@ -51,7 +55,6 @@
 
     if(!empty($_FILES["picture_link"]["name"]) && !empty($_FILES['picture_link']['tmp_name']))
     {
-      echo "ENTRY!";
       $target_dir = "../dist/upload/";
       $target_file = $target_dir . basename($_FILES["picture_link"]["name"]);
       $uploadOk = 1;
@@ -109,10 +112,10 @@
 
     if(!empty($_FILES["picture_link"]["name"]) && !empty($_FILES['picture_link']['tmp_name']))
     {
-      echo "ENTRY!";
       $stmt = $conn->prepare("UPDATE `products` SET `tytul` = ?, `picture_link` = ?, `type_id` = ?, `opis_short` = ?, `cena` = ?, `opis_long` = ? WHERE `products`.`product_id` = $product_id;");
       $stmt->bind_param('ssisds', $tytul, $target_file, $type, $opis_short, $cena, $opis_long);
       $stmt->execute();
+      unlink(realpath($prod["picture_link"]));
     }
     else
     {
@@ -132,4 +135,5 @@
     }
 
   }
+  header("location: ../pages/index.php");
 ?>

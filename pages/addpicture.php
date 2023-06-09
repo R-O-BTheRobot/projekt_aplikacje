@@ -1,5 +1,20 @@
 <?php
 session_start();
+/** @var mysqli $conn*/
+
+if(!isset($_GET["productid"]) || !is_numeric($_GET["productid"]))
+{
+  header("location: ./index.php");
+}
+require_once("../scripts/dbconnect.php");
+$sql = "SELECT product_id FROM products WHERE product_id=$_GET[productid];";
+$result = $conn->query($sql);
+$product = $result->fetch_assoc();
+if ($result->num_rows == 0)
+{
+  header("location: ./index.php");
+}
+
 if(!isset($_SESSION["loggedIn"]["role_ID"]))
 {
   header("location: ./index.php");
@@ -54,6 +69,32 @@ else
   <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
+      <!--Modal Popup Form-->
+      <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content bg-default">
+            <form action="../scripts/addpicture.php" method="POST" enctype="multipart/form-data">
+              <?php
+                echo "<input type='hidden' name='product_id' value=$_GET[productid]>";
+              ?>
+              <div class="modal-header">
+                <h5 class="modal-title" id="warningModalLabel">Dodaj nowe zdjęcie</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <input class="form-control" type="file" name="secondaryPicture" accept="image/png, image/jpeg, image/webp">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <!--Modal Popup Warning-->
       <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -65,8 +106,7 @@ else
               </button>
             </div>
             <div class="modal-body">
-              Uważaj! Zamierzasz usunąć przedmiot <b><div class="d-inline" id="productname"></div></b>.
-              Kontynuować?
+              Czy napewno chcesz usunąć wybrane zdjęcie?
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
@@ -135,42 +175,30 @@ ERROR;
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <table id="usertab" class="table table-bordered table-hover">
+                <table id="picturetab" class="table table-bordered table-hover">
                   <thead>
                   <tr>
-                    <th>Nazwa</th>
-                    <th class="noExport">Główne zdjęcie</th>
-                    <th>Krótki opis</th>
-                    <th>Długi opis</th>
-                    <th>Typ</th>
-                    <th>Cena</th>
+                    <th class="">Zdjęcie drugorzędne</th>
                     <th class="noExport">Akcja</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php
                   require_once "../scripts/dbconnect.php";
-                  $sql = "SELECT P.tytul, P.product_id, P.picture_link, P.opis_short, P.opis_long, P.cena, T.type FROM `products` P INNER JOIN `type` T ON P.type_id = T.type_id";
+                  $sql = "SELECT id, picture_link FROM pictures WHERE product_id=$_GET[productid]";
                   $result = $conn->query($sql);
-                  while ($product = $result->fetch_assoc())
+                  while ($pic = $result->fetch_assoc())
                   {
                     echo <<< USER_DATA
                         <tr>
-                            <td>$product[tytul]</td>
                             <td>
-                              <a href="$product[picture_link]" data-toggle="lightbox" data-gallery="gallery">
-                                <img src="$product[picture_link]" alt="$product[opis_short]" width="150">
+                              <a href="$pic[picture_link]" data-toggle="lightbox" data-gallery="gallery">
+                                <img src="$pic[picture_link]" width="150">
                               </a>
                             </td>
-                            <td>$product[opis_short]</td>
-                            <td>$product[opis_long]</td>
-                            <td>$product[type]</td>
-                            <td>$product[cena]</td>
+
                             <td>
-                                <a href="./editwarehouse.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Stan magazynowy</button></a>
-                                <a href="./addpicture.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Dodaj zdjęcia</button></a>
-                                <a href="./editproduct.php?productid=$product[product_id]"><button class="btn btn-outline-primary btn-block">Edytuj</button></a>
-                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteproduct.php?productid=$product[product_id]" data-productname="$product[tytul]"><button class="btn btn-outline-danger btn-block">Usuń</button></a>
+                              <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deletepicture.php?picid=$pic[id]"><button class="btn btn-outline-danger">Usuń</button></a>
                             </td>
                         </tr>
 USER_DATA;
@@ -181,13 +209,11 @@ USER_DATA;
                   </tbody>
                   <tfoot>
                   <tr>
-                    <th>Nazwa</th>
-                    <th>Główne zdjęcie</th>
-                    <th>Krótki opis</th>
-                    <th>Długi opis</th>
-                    <th>Typ</th>
-                    <th>Cena</th>
-                    <th>Akcja</th>
+                    <td colspan="2">
+                      <a href="#formModal" data-toggle="modal">
+                        <button class="btn btn-primary"><i class="fa fa-plus"></i> Dodaj zdjęcie</button>
+                      </a>
+                    </td>
                   </tr>
                   </tfoot>
                 </table>
@@ -237,70 +263,31 @@ USER_DATA;
 <script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- Ekko Lightbox -->
-<script src="../plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
+<!-- Ekko Lightbox -->
+<script src="../plugins/ekko-lightbox/ekko-lightbox.min.js"></script>
 <!-- Creating the proper DataTable -->
 <script>
   $(function () {
-    $("#usertab").DataTable({
-      "responsive": true,
+    $('#picturetab').DataTable({
+      "paging": false,
       "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": false,
       "autoWidth": false,
+      "responsive": true,
       "columnDefs": [
         {"className": "dt-center", "targets": "_all"}
-      ],
-      "buttons": [
-        {
-          extend: "copy",
-          text:"Kopiuj",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "csv",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "excel",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "pdf",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "print",
-          text:"Drukuj",
-          title: "SklepXYZ_Produkty",
-          exportOptions: {
-            columns: ':not(.noExport)'
-          }
-        },
-        {
-          extend: "colvis",
-          text:"Widoczność kolumn"
-        }]
-    }).buttons().container().appendTo('#usertab_wrapper .col-md-6:eq(0)');
+      ]
+    });
   });
 </script>
 <script>
   $(document).on("click", "#redirectSrc", function () {
     var redirectUrl = $(this).data('redirect');
-    var productname = $(this).data('productname');
     $("#redirect").attr('href', redirectUrl);
-    $("#productname").text(productname);
   });
 </script>
 <script>
