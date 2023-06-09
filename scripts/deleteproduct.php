@@ -1,38 +1,37 @@
 <?php
   session_start();
   /** @var mysqli $conn*/
-  header("location: ../pages/adminpanel.php");
+  header("location: ../pages/modpanel.php");
 
   require_once "./dbconnect.php";
 
-  if(!isset($_GET["userid"]))
+  if(!isset($_GET["productid"]))
   {
     header("location: ../pages/index.php");
     exit();
   }
 
-  $sqlsel = "SELECT firstName, lastName FROM users WHERE id=$_GET[userid]";
+  $sqlsel = "SELECT tytul FROM products WHERE product_id=$_GET[productid]";
   $resultsel = $conn->query($sqlsel);
 
-  if ($resultsel->num_rows == 1)
+  if ($resultsel->num_rows != 1)
   {
-    foreach ($user = $resultsel->fetch_assoc() as $key => $value)
-    {
-      $$key = $user[$key];
-    }
+    $_SESSION["error"] = "Coś poszło nie tak. Czy produkt nie został już usunięty?";
+    exit();
   }
   else
   {
-    $_SESSION["error"] = "Coś poszło nie tak. Czy użytkownik nie został już usunięty?";
-    exit();
+    $prod = $resultsel->fetch_assoc();
   }
 
-  $sql = "DELETE FROM users WHERE id = $_GET[userid]";
-  $conn->query($sql);
+  $sqlwh = "DELETE FROM warehouse WHERE product_id = $_GET[productid]";
+  $conn->query($sqlwh);
+  $sqlprod = "DELETE FROM products WHERE product_id = $_GET[productid]";
+  $conn->query($sqlprod);
   if ($conn->affected_rows == 1)
   {
     //echo "Rekord usunięty pomyślnie!";
-    $_SESSION["success"] = "Pomyślnie usunięto użytkownika $firstName $lastName";
+    $_SESSION["success"] = "Pomyślnie usunięto produkt $prod[tytul]";
   }
   else
   {

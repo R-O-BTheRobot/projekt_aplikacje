@@ -3,7 +3,6 @@
 
  Cele sprecyzowane:
  - Strona do edytowania stanów magazynowych produktów
- - Skrypt /scripts/deleteproduct.php do usuwania produktów z productsa + przedmiotów z warehouse'a
  - Skrypt /scripts/pay.php, który usunie wybrane produkty z warehouse'a oraz wrzuci nas na /pages/thankyou.php,
    która będzie prostą stroną z podziękowaniem za zakup i autoprzekierowaniem na stronę główną
  - Zapobiegnij usunięciu własnego użytkownika

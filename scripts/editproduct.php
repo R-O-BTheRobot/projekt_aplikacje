@@ -4,7 +4,7 @@
   /** @var array $empty_fields */
   /** @var array $filter_err */
   require_once "./dbconnect.php";
-  print_r($_POST);
+  //print_r($_POST);
 
   function sanitizeInput($input):string
   {
@@ -32,7 +32,7 @@
 
     foreach($_POST as $key => $value)
     {
-      if($key != "picture_link")
+      if($key != "submit")
         if(empty($value))
           $empty_fields[] = "Pole <b>$translation_arr[$key]</b> jest puste.";
     }
@@ -40,50 +40,96 @@
     if (!empty($empty_fields))
     {
       $_SESSION["error"] = implode("<br>", $empty_fields);
-      print_r($_POST);
-      //echo "<script>history.back();</script>";
+      echo "<script>history.back();</script>";
       exit();
     }
 
     foreach ($_POST as $key => $value)
     {
-      if ($key != "newPass")
-        $$key = sanitizeInput($_POST["$key"]);
+      $$key = sanitizeInput($_POST["$key"]);
     }
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-      $filter_err[] = "Nieprawidłowy adres poczty elektronicznej!";
-
-    if(!empty($_POST["newPass"]))
-      if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s])\S{8,32}$/', $_POST["newPass"]))
-        $filter_err[] = "Hasło nie spełnia wymagań!";
-
-    if (!empty($filter_err))
+    if(!empty($_FILES["picture_link"]["name"]) && !empty($_FILES['picture_link']['tmp_name']))
     {
-      $_SESSION["error"] = implode("<br>", $filter_err);
+      echo "ENTRY!";
+      $target_dir = "../dist/upload/";
+      $target_file = $target_dir . basename($_FILES["picture_link"]["name"]);
+      $uploadOk = 1;
+      $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+      // Check if image file is a actual image or fake image
+      if(isset($_POST["submit"])) {
+        $check = getimagesize($_FILES["picture_link"]["tmp_name"]);
+        if($check !== false) {
+          echo "File is an image - " . $check["mime"] . ".";
+          $uploadOk = 1;
+        } else {
+          $file_err[] = "Plik nie jest plikiem obrazu!";
+          $uploadOk = 0;
+        }
+      }
+
+      // Check if file already exists
+      if (file_exists($target_file)) {
+        $file_err[] = "Plik już istnieje!";
+        $uploadOk = 0;
+      }
+
+      // Check file size
+      if ($_FILES["picture_link"]["size"] > 500000) {
+        $file_err[] = "Plik jest zbyt duży!";
+        $uploadOk = 0;
+      }
+
+      // Allow certain file formats
+      if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "webp" ) {
+        $file_err[] = "Plik powinien mieć rozszerzenie JPG, JPEG, PNG bądź WEBP!";
+        $uploadOk = 0;
+      }
+
+      // Check if $uploadOk is set to 0 by an error
+      if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+      // if everything is ok, try to upload file
+      } else {
+        if (move_uploaded_file($_FILES["picture_link"]["tmp_name"], $target_file)) {
+          echo "The file ". htmlspecialchars( basename( $_FILES["picture_link"]["name"])). " has been uploaded.";
+        } else {
+          $file_err[] = "Błąd przesyłania pliku.";
+        }
+      }
+    }
+
+    if (!empty($file_err))
+    {
+      $_SESSION["error"] = implode("<br>", $file_err);
       echo "<script>history.back();</script>";
       exit();
     }
 
-    if(!empty($_POST["newPass"]))
+    if(!empty($_FILES["picture_link"]["name"]) && !empty($_FILES['picture_link']['tmp_name']))
     {
-      $pass = password_hash($_POST["newPass"], PASSWORD_ARGON2ID);
-      $stmt = $conn->prepare("UPDATE `users` SET `email`= ?, `firstName` = ?, `lastName` = ?, `role_id`=?, `password` = ? WHERE `id` = $_POST[user_ID];");
-      $stmt->bind_param('sssis', $email, $firstName, $lastName, $role, $pass);
+      echo "ENTRY!";
+      $stmt = $conn->prepare("UPDATE `products` SET `tytul` = ?, `picture_link` = ?, `type_id` = ?, `opis_short` = ?, `cena` = ?, `opis_long` = ? WHERE `products`.`product_id` = $product_id;");
+      $stmt->bind_param('ssisds', $tytul, $target_file, $type, $opis_short, $cena, $opis_long);
       $stmt->execute();
     }
     else
     {
-      $stmt = $conn->prepare("UPDATE `users` SET `email`= ?, `firstName` = ?, `lastName` = ?, `role_id`=? WHERE `id` = $_POST[user_ID];");
-      $stmt->bind_param('sssi', $email, $firstName, $lastName, $role);
+      $stmt = $conn->prepare("UPDATE `products` SET `tytul` = ?, `type_id` = ?, `opis_short` = ?, `cena` = ?, `opis_long` = ? WHERE `products`.`product_id` = $product_id;");
+      $stmt->bind_param('sisds', $tytul, $type, $opis_short, $cena, $opis_long);
       $stmt->execute();
     }
-    $_SESSION["success"] = "Prawidłowo zaktualizowano dane użytkownika $firstName $lastName";
-    echo "<script>history.back();</script>";
+    if ($stmt->affected_rows == 1)
+    {
+      $_SESSION["success"] = "Prawidłowo zaktualizowano dane produktu $tytul";
+      echo "<script>history.back();</script>";
+    }
+    else
+    {
+      $_SESSION["error"] = "Brak zmian";
+      echo "<script>history.back();</script>";
+    }
+
   }
-
-
-  //Add relevant checks regarding if the data input is correct, especially with the optional new password
-  //Check if any changes happened AT ALL, if not then header back to /pages/edituser.php with a
-  //$_SESSION["success"] message of "no changes made"
 ?>

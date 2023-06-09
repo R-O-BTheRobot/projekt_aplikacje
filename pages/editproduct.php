@@ -186,7 +186,7 @@ USER_DATA;
                               </select>
                             </td>
                             <td><input class="form-control" type="number" step="0.01" name="cena" value="$product[cena]"></td>
-                            <td><button type="submit" class="btn btn-primary">Aktualizuj</button></td>
+                            <td><button type="submit" name="submit" class="btn btn-primary">Aktualizuj</button></td>
                         </tr>
 USER_DATA;
 
