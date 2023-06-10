@@ -13,7 +13,7 @@ $phpmailer = new PHPMailer(true);
 
 //Server settings
 $phpmailer->CharSet = "UTF-8";
-$phpmailer->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+//$phpmailer->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
 $phpmailer->isSMTP();                                            //Send using SMTP
 $phpmailer->Host       = 'in-v3.mailjet.com';                     //Set the SMTP server to send through
 $phpmailer->SMTPAuth   = true;                                   //Enable SMTP authentication
