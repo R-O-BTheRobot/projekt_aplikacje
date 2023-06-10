@@ -1,15 +1,6 @@
- Cele ogólne:
-
- Cele sprecyzowane:
-
- Cele dodatkowe:
-
- Aktywacja przez email:
- - Dodatkowa zmienna "activated" w tabeli `users` (Done)
-   Zmienna umożliwi dokonanie zakupu w koszyku, aktywuje przycisk "Przejdź do płatności" i da mu tooltip "Aktywuj konto aby sfinalizować zakup" (Not)
- - Nowa prosta strona /pages/activate.php, która wyświetla prosty komunikat o aktywacji konta oraz podmienia pole "activated" w tabeli "users"
- - Po rejestracji, wyślij emaila mailjetem na email na który został zarejestrowany użytkownik. Wyślij link z pierwszymi/ostatnimi X znakami z hasha argon2ID, w ramach zabezpieczenia aktywacji
-   SELECT * FROM users WHERE password LIKE '%part_of_argon_hash%'
+Projekt ukończony :)
 
 Opcjonalne:
+ - Zmiana tytułów poszczególnych stron, zazwyczaj są one zapożyczone od AdminaLTE
+ - Dodanie miniaturki dla karty strony
  - Redukcja ilości warningów w projekcie

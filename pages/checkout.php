@@ -296,8 +296,6 @@ PAY_BUTTON;
                       Prejdź do płatności
                     </button>
 PAY_BUTTON;
-
-
                   }
                   //if `activated` == 0
                   //else button with a redirect link to a page which will delete
