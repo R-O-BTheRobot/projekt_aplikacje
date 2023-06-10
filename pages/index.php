@@ -171,11 +171,11 @@ GET_PRODUCTS_FROM_DB;
 LOGOUT;
   unset($_GET["logout"]);
   }
-  if (isset($_GET["activate"]))
+  if (isset($_GET["activated"]))
   {
-    echo <<< LOGOUT
+    echo <<< ACTIVATED
     <script>toastr.success('Twoje konto zostało aktywowane!')</script>
-LOGOUT;
+ACTIVATED;
   unset($_GET["activate"]);
   }
   //Modal Popup Script
