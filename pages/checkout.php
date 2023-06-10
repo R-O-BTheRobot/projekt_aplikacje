@@ -168,7 +168,7 @@ TAB_STRT;
                                   </button>
                                 </a>
                                 <div class="col-1"></div>
-                                <a href="../scripts/delcart.php?product_id=$product_id">
+                                <a href="../scripts/delcart.php?product_id=$product_id&size=$size">
                                   <button class="btn btn-outline-danger btn-sm">
                                     <i class="fa fa-trash"></i>
                                   </button>

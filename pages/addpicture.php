@@ -170,8 +170,11 @@ ERROR;
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-header">
+              <div class="card-header d-flex">
                 <h3 class="card-title">Panel zarządzania produktami</h3>
+                <a href="#formModal" data-toggle="modal" class="ml-auto">
+                  <button class="btn btn-success"><i class="fa fa-xs fa-plus"></i> Dodaj zdjęcie</button>
+                </a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -209,11 +212,6 @@ USER_DATA;
                   </tbody>
                   <tfoot>
                   <tr>
-                    <td colspan="2">
-                      <a href="#formModal" data-toggle="modal">
-                        <button class="btn btn-primary"><i class="fa fa-xs fa-plus"></i> Dodaj zdjęcie</button>
-                      </a>
-                    </td>
                   </tr>
                   </tfoot>
                 </table>

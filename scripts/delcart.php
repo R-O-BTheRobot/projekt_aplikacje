@@ -5,7 +5,7 @@
 session_start();
 //unset($_SESSION["cart"]);
 //print_r($_POST);
-$required_fields = ["product_id"];
+$required_fields = ["product_id", "size"];
 $translation_arr = ["size" => "Rozmiar", "product_id" => "Identyfikator Produktu"];
 
 if($_SERVER["REQUEST_METHOD"]=="POST")
@@ -53,18 +53,16 @@ if(isset($size)) //Do the required fields make sense?
     exit();
   }
 }
-else
+
+$stmt_pid = $conn->prepare("SELECT product_id FROM products WHERE product_id=?");
+$stmt_pid->bind_param("i", $product_id);
+$stmt_pid->execute();
+$result_pid = $stmt_pid->get_result();
+if($result_pid->num_rows == 0)
 {
-  $stmt_pid = $conn->prepare("SELECT product_id FROM products WHERE product_id=?");
-  $stmt_pid->bind_param("i", $product_id);
-  $stmt_pid->execute();
-  $result_pid = $stmt_pid->get_result();
-  if($result_pid->num_rows == 0)
-  {
-    $_SESSION["error"] = "Wystąpił błąd. Skontaktuj się z administratorem";
-    header("location: ../pages/index.php");
-    exit();
-  }
+  $_SESSION["error"] = "Wystąpił błąd. Skontaktuj się z administratorem";
+  header("location: ../pages/index.php");
+  exit();
 }
 
 
@@ -75,7 +73,7 @@ if (!isset($_SESSION["cart"]))
 }
 else
 {
-  if(!isset($size) || count($_SESSION["cart"][$product_id]) == 1)
+  if(count($_SESSION["cart"][$product_id]) == 1)
   {
     if(count($_SESSION["cart"]) == 1)
       unset($_SESSION["cart"]);

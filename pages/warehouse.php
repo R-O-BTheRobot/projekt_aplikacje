@@ -68,6 +68,41 @@ else
   <div class="content-wrapper">
     <!-- Main content -->
     <section class="content">
+      <!--Modal Popup Form-->
+      <div class="modal fade" id="formModal" tabindex="-1" role="dialog" aria-labelledby="formModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content bg-default">
+            <form action="../scripts/addwh.php" method="POST" enctype="multipart/form-data">
+              <?php
+              echo "<input type='hidden' name='product_id' value=$_GET[productid]>";
+              ?>
+              <div class="modal-header">
+                <h5 class="modal-title" id="warningModalLabel">Dodaj nowy rozmiar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <?php
+                echo "<select title='size' name='size' class='form-control'>";
+                $sql = "SELECT size_id, size FROM sizes";
+                $result = $conn->query($sql);
+                while ($size = $result->fetch_assoc())
+                {
+                  echo "<option value='$size[size_id]'>$size[size]</option>";
+                }
+                echo "</select>";
+                ?>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                <button type="submit" class="btn btn-primary">Dodaj</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
       <!--Modal Popup Warning-->
       <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -146,7 +181,7 @@ ERROR;
             <div class="card">
               <div class="card-header d-flex">
                 <h3 class="card-title">Panel zarządzania produktami</h3>
-                <a href="#" class="ml-auto">
+                <a href="#formModal" data-toggle="modal" class="ml-auto">
                   <button class="btn btn-success"><i class="fa fa-xs fa-plus"></i> Dodaj nowy rozmiar</button>
                 </a>
               </div>
@@ -174,12 +209,14 @@ ERROR;
                         <tr id="$warehouse[size_id]">
                             <td>
                               <form action="../scripts/editwh.php" method="POST">
+                              <input type='hidden' name='product_id' value=$_GET[productid]>
+                              <input type='hidden' name='size' value=$warehouse[size_id]>
                                 $warehouse[size]
                             </td>
                             <td><input type="number" class="form-control count" disabled name="count" value="$warehouse[count]"></td>
                             <td class="d=flex">
-                                <button type="button" class="btn btn-outline-primary submitbtn" data-id="$warehouse[size_id]">Zmień wartości</button>
-                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deletewh.php?productid=$warehouse[product_id]&size=$warehouse[size]" data-size="$warehouse[size]" data-productname="$warehouse[tytul]"><button class="btn btn-outline-danger">Usuń</button></a>
+                                <button type="button" class="btn btn-outline-primary updatebtn" data-id="$warehouse[size_id]">Zmień wartości</button>
+                                <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deletewh.php?productid=$warehouse[product_id]&size=$warehouse[size_id]" data-size="$warehouse[size]" data-productname="$warehouse[tytul]"><button class="btn btn-outline-danger">Usuń</button></a>
                               </form>
                             </td>
                         </tr>
@@ -310,16 +347,22 @@ USER_DATA;
   });
 </script>
 <script>
-  $(document).on("mouseup", ".submitbtn", function () {
+  $(document).on("mouseup", ".updatebtn", function () {
     var wh_id = $(this).data('id');
-    $(".submitbtn").attr('type', 'button');
-    $(".submitbtn").text("Zmień wartości");
+    var sbtn=$(".submitbtn");
+    var ubtn=$("#"+wh_id+" .updatebtn")
+    sbtn.attr('type', 'button');
+    sbtn.text("Zmień wartości");
+    sbtn.addClass("updatebtn");
+    sbtn.removeClass("submitbtn");
     $(".count").prop('disabled', true)
     setTimeout(function ()
     {
       $("#"+wh_id+" .count").prop('disabled', false);
-      $("#"+wh_id+" .submitbtn").attr('type', 'submit');
-      $("#"+wh_id+" .submitbtn").text("Aktualizuj");
+      ubtn.attr('type', 'submit');
+      ubtn.text("Aktualizuj");
+      ubtn.addClass("submitbtn");
+      ubtn.removeClass("updatebtn");
     }, 10)
   });
 </script>

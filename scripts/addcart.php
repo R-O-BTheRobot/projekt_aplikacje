@@ -117,7 +117,7 @@ else
     }
     else
     {
-      if($result->num_rows != 0)
+      if($result["count"] != 0)
       {
         if(isset($_SESSION["cart"][$product_id]))
         {
@@ -145,7 +145,7 @@ else
   }
   else
   {
-    if($result->num_rows != 0)
+    if($result["count"] != 0)
     {
       if(isset($_SESSION["cart"][$product_id]))
       {

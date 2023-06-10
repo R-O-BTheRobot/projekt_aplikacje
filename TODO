@@ -2,10 +2,8 @@
  - możliwość dodawania i usuwania produktów sklepowych przez moderatorów i administratorów
 
  Cele sprecyzowane:
- - Strona do edytowania stanów magazynowych produktów warehouse.php (Partial)
- - Zmień położenie przycisku do dodawania zdjęć, żeby był spójny z modpanel.php
- - Skopiuj działanie przycisku z addpicture.php do warehouse.php
- - Dodaj skrypty editwh.php, addwh.php i deletewh.php
+ - Pododawaj zabezpieczenia $_SESSION["loggedIn"]["roleId"] do co ważniejszych skryptów
+ - W skryptach warehousowych pododawaj translation_arr żeby wszystko działało mniej-więcej tak samo
  - Skrypt /scripts/pay.php, który usunie wybrane produkty z warehouse'a oraz wrzuci nas na /pages/thankyou.php,
    która będzie prostą stroną z podziękowaniem za zakup i autoprzekierowaniem na stronę główną
 
