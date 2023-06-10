@@ -168,7 +168,7 @@ TAB_STRT;
                                   </button>
                                 </a>
                                 <div class="col-1"></div>
-                                <a href="../scripts/delcart.php?product_id=$product_id&size=$size">
+                                <a href="../scripts/delcart.php?product_id=$product_id&size=$size&del">
                                   <button class="btn btn-outline-danger btn-sm">
                                     <i class="fa fa-trash"></i>
                                   </button>
@@ -262,7 +262,7 @@ PAY_BUTTON;
                   {
                     echo <<< PAY_BUTTON
                     <a href="../scripts/pay.php">
-                      <button type="button" disabled class="btn btn-success float-right"><i class="far fa-credit-card"></i>
+                      <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
                         Prejdź do płatności
                       </button>
                     </a>

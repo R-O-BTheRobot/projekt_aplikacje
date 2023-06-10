@@ -40,18 +40,16 @@ if (!empty($rq_field_err))
 }
 
 require_once "./dbconnect.php";
-if(isset($size)) //Do the required fields make sense?
+//Do the required fields make sense?
+$stmt_sid = $conn->prepare("SELECT size_id FROM sizes WHERE size_id=?");
+$stmt_sid->bind_param("i", $size);
+$stmt_sid->execute();
+$result_sid = $stmt_sid->get_result();
+if($result_sid->num_rows == 0)
 {
-  $stmt_sid = $conn->prepare("SELECT size_id FROM sizes WHERE size_id=?");
-  $stmt_sid->bind_param("i", $size);
-  $stmt_sid->execute();
-  $result_sid = $stmt_sid->get_result();
-  if($result_sid->num_rows == 0)
-  {
-    $_SESSION["error"] = "Wystąpił błąd. Skontaktuj się z administratorem";
-    header("location: ../pages/index.php");
-    exit();
-  }
+  $_SESSION["error"] = "Wystąpił błąd. Skontaktuj się z administratorem";
+  header("location: ../pages/index.php");
+  exit();
 }
 
 $stmt_pid = $conn->prepare("SELECT product_id FROM products WHERE product_id=?");
@@ -73,7 +71,7 @@ if (!isset($_SESSION["cart"]))
 }
 else
 {
-  if(count($_SESSION["cart"][$product_id]) == 1)
+  if(isset($_GET["del"]) || count($_SESSION["cart"][$product_id]) == 1)
   {
     if(count($_SESSION["cart"]) == 1)
       unset($_SESSION["cart"]);
