@@ -107,7 +107,7 @@ SUCCESS;
               $_SESSION[error]
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-primary" data-dismiss="modal">OK!</button>
+              <button type="button" class="btn btn-primary" id="primary" data-dismiss="modal">OK!</button>
             </div>
           </div>
         </div>
@@ -143,9 +143,6 @@ ERROR;
 GET_PRODUCTS_FROM_DB;
                   }
                   ?>
-                  <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#alertModal">
-                    Launch demo modal
-                  </button>-->
                 </div>
               </div>
             </div>
@@ -180,7 +177,7 @@ LOGOUT;
     echo <<< MODALJS
 <script>
   $(window).on('load', function() {
-    $('#alertModal').modal('show')
+    $('#alertModal').modal('show');
   })
 </script>
 MODALJS;

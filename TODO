@@ -2,7 +2,6 @@
  - możliwość dodawania i usuwania produktów sklepowych przez moderatorów i administratorów
 
  Cele sprecyzowane:
- - Zmień kolor przycisku Usuń w #warningModal na btn-danger
  - Skrypt /scripts/pay.php, który usunie wybrane produkty z warehouse'a oraz wrzuci nas na /pages/thankyou.php,
    która będzie prostą stroną z podziękowaniem za zakup i autoprzekierowaniem na stronę główną
 

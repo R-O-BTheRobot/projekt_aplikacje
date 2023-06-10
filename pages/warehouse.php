@@ -133,7 +133,7 @@ else
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-primary" data-dismiss="modal">Anuluj</button>
-              <a id="redirect" href="#"><button type="button" class="btn btn-secondary">Usuń</button></a>
+              <a id="redirect" href="#"><button type="button" class="btn btn-danger">Usuń</button></a>
             </div>
           </div>
         </div>
