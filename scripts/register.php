@@ -5,6 +5,7 @@
 /** @var string $lastName */
 /** @var array $rq_field_err */
 /** @var array $filter_err */
+/** @var PHPMailer $phpmailer */
 
 header("location: ../pages/register.php");
 $_SESSION["error"] = "Nie dodano użytkownika. Skontaktuj się z administratorem.";
@@ -74,12 +75,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
   $stmt = $conn->prepare("INSERT INTO `users` (`email`, `firstName`, `lastName`, `password`) VALUES (?, ?, ?, ?);");
   $pass = password_hash($_POST["pass1"], PASSWORD_ARGON2ID);
+  $activate_id = substr($pass, 31, 10);
   $stmt->bind_param('ssss', $mail, $firstName, $lastName, $pass);
   $stmt->execute();
 
   if ($stmt->affected_rows == 1)
   {
-    $_SESSION["success"] = "Prawidowo dodano użytkownika $_POST[firstName] $_POST[lastName]";
+    require_once "../scripts/mail.php";
+    try {
+      //Recipients
+      $phpmailer->setFrom('no-reply@robtherobot.space', 'No-reply: SklepXYZ');
+      $phpmailer->addAddress($mail);
+
+      //Content
+      $phpmailer->isHTML(true);                                  //Set email format to HTML
+      $phpmailer->Subject = "Aktywuj swoje konto w SklepieXYZ";
+      $phpmailer->Body    = "Poniżej znajdziesz link aktywacyjny dla swojego konta:<br>"
+        ."<a href='https://phpfinal.robtherobot.space/pages/activate.php?id=$activate_id'>Klik!</a><br>"
+        ."Życzymy miłych zakupów! <br>Zespół SklepuXYZ";
+      $phpmailer->AltBody = "Poniżej znajdziesz link aktywacyjny dla swojego konta: https://phpfinal.robtherobot.space/pages/activate.php?id=$activate_id";
+
+      $phpmailer->send();
+      $_SESSION["success"] = "Prawidowo dodano użytkownika $_POST[firstName] $_POST[lastName]!<br>"
+        . "Wysłaliśmy email weryfikacyjny na twój adres email!";
+    } catch (Exception $e) {
+      $_SESSION["error"] = "Nie wysłano wiadomości email przez błąd: {$phpmailer->ErrorInfo}";
+    }
+
     unset($_SESSION["error"]);
     header("location: ../pages");
     exit();

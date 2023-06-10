@@ -276,13 +276,27 @@ PAY_BUTTON;
 PAY_BUTTON;
                   else
                   {
-                    echo <<< PAY_BUTTON
+                    $user_id = $_SESSION["loggedIn"]["user_ID"];
+                    $sql = "SELECT activated FROM `users` WHERE id=$user_id";
+                    $result = $conn->query($sql);
+                    $activated = $result->fetch_assoc()["activated"];
+                    if($activated==1)
+                    {
+                      echo <<< PAY_BUTTON
                     <a href="../scripts/pay.php">
                       <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
                         Prejdź do płatności
                       </button>
                     </a>
 PAY_BUTTON;
+                    }
+                    else
+                      echo <<< PAY_BUTTON
+                    <button type="button" disabled data-toggle="tooltip" data-placement="top" title="Najpierw zweryfikuj swoje konto!" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
+                      Prejdź do płatności
+                    </button>
+PAY_BUTTON;
+
 
                   }
                   //if `activated` == 0

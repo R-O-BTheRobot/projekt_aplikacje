@@ -1,5 +1,4 @@
  Cele ogólne:
- - możliwość dodawania i usuwania produktów sklepowych przez moderatorów i administratorów
 
  Cele sprecyzowane:
 
@@ -13,7 +12,4 @@
    SELECT * FROM users WHERE password LIKE '%part_of_argon_hash%'
 
 Opcjonalne:
- - setcookie() po kliknięciu "Zapamiętaj mnie" w /pages/login php
-   później na każdej stronie if(!isset($_SESSION["loggedIn"] && [jest ciasteczko]) require_once skrypt,
-   który je odczyta
  - Redukcja ilości warningów w projekcie
