@@ -7,7 +7,7 @@
 /** @var array $filter_err */
 /** @var PHPMailer $phpmailer */
 
-header("location: ../pages/register.php");
+//header("location: ../pages/register.php");
 $_SESSION["error"] = "Nie dodano użytkownika. Skontaktuj się z administratorem.";
 
 function sanitizeInput($input):string
