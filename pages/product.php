@@ -4,19 +4,6 @@
  */
   session_start();
 
-  if(!isset($_GET["product"]) || !is_numeric($_GET["product"]))
-  {
-    header("location: ./index.php");
-  }
-  require_once("../scripts/dbconnect.php");
-  $sql = "SELECT * FROM products WHERE product_id=$_GET[product];";
-  $result = $conn->query($sql);
-  $product = $result->fetch_assoc();
-  if ($result->num_rows == 0)
-  {
-    header("location: ./index.php");
-  }
-
 if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
 {
   $userid = $_SESSION["loggedIn"]["user_ID"];
@@ -29,6 +16,19 @@ if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
     header("location: ../scripts/logout.php");
   }
 }
+
+  if(!isset($_GET["product"]) || !is_numeric($_GET["product"]))
+  {
+    header("location: ./index.php");
+  }
+  require_once("../scripts/dbconnect.php");
+  $sql = "SELECT * FROM products WHERE product_id=$_GET[product];";
+  $result = $conn->query($sql);
+  $product = $result->fetch_assoc();
+  if ($result->num_rows == 0)
+  {
+    header("location: ./index.php");
+  }
 ?>
 <!DOCTYPE html>
 <html lang="pl">

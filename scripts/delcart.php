@@ -71,12 +71,30 @@ if (!isset($_SESSION["cart"]))
 }
 else
 {
-  if(isset($_GET["del"]) || count($_SESSION["cart"][$product_id]) == 1)
+  if(count($_SESSION["cart"][$product_id]) == 1)
   {
     if(count($_SESSION["cart"]) == 1)
       unset($_SESSION["cart"]);
     else
       unset($_SESSION["cart"][$product_id]);
+  }
+  elseif(isset($_GET["del"]))
+  {
+    foreach($_SESSION["cart"][$product_id] as $key => $value) {
+      if ($value == $size)
+      {
+        if(count($_SESSION["cart"][$product_id]) == 1)
+        {
+          if(count($_SESSION["cart"]) == 1)
+          {
+            unset($_SESSION["cart"]);
+            break;
+          }
+        }
+        else
+          unset($_SESSION["cart"][$product_id][$key]);
+      }
+    }
   }
   else
   {
