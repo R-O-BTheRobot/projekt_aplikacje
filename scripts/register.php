@@ -98,11 +98,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
       $phpmailer->send();
       $_SESSION["success"] = "Prawidowo dodano użytkownika $_POST[firstName] $_POST[lastName]!<br>"
         . "Wysłaliśmy email weryfikacyjny na twój adres email!";
+      unset($_SESSION["error"]);
     } catch (Exception $e) {
       $_SESSION["error"] = "Nie wysłano wiadomości email przez błąd: {$phpmailer->ErrorInfo}";
     }
-
-    unset($_SESSION["error"]);
     header("location: ../pages");
     exit();
   }
