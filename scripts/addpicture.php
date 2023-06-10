@@ -4,6 +4,12 @@ session_start();
 
 require_once "./dbconnect.php";
 
+if(!isset($_SESSION["loggedIn"]["role_ID"]) || $_SESSION["loggedIn"]["role_ID"] == 1)
+{
+  header("location: ../pages/index.php");
+  exit();
+}
+
 if($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["product_id"]))
 {
   header("location: ../pages/index.php");

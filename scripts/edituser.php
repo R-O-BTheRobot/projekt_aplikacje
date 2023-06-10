@@ -11,6 +11,12 @@
     return htmlentities(stripslashes(trim($input)));
   }
 
+  if(!isset($_SESSION["loggedIn"]["role_ID"]) || $_SESSION["loggedIn"]["role_ID"] != 3)
+  {
+    header("location: ../pages/index.php");
+    exit();
+  }
+
   if($_SERVER["REQUEST_METHOD"] == "POST")
   {
     if(!isset($_POST["user_ID"]))

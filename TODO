@@ -2,8 +2,7 @@
  - możliwość dodawania i usuwania produktów sklepowych przez moderatorów i administratorów
 
  Cele sprecyzowane:
- - Pododawaj zabezpieczenia $_SESSION["loggedIn"]["roleId"] do co ważniejszych skryptów
- - W skryptach warehousowych pododawaj translation_arr żeby wszystko działało mniej-więcej tak samo
+ - Zmień kolor przycisku Usuń w #warningModal na btn-danger
  - Skrypt /scripts/pay.php, który usunie wybrane produkty z warehouse'a oraz wrzuci nas na /pages/thankyou.php,
    która będzie prostą stroną z podziękowaniem za zakup i autoprzekierowaniem na stronę główną
 

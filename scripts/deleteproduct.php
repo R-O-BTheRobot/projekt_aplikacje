@@ -5,6 +5,12 @@
 
   require_once "./dbconnect.php";
 
+  if(!isset($_SESSION["loggedIn"]["role_ID"]) || $_SESSION["loggedIn"]["role_ID"] == 1)
+  {
+    header("location: ../pages/index.php");
+    exit();
+  }
+
   if(!isset($_GET["productid"]))
   {
     header("location: ../pages/index.php");

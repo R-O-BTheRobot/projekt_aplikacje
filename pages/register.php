@@ -1,5 +1,18 @@
 <?php
 session_start();
+/** @var mysqli $conn*/
+if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
+{
+  $userid = $_SESSION["loggedIn"]["user_ID"];
+  require_once("../scripts/dbconnect.php");
+  $sql = "SELECT id FROM users WHERE id=$userid;";
+  $result = $conn->query($sql);
+  $product = $result->fetch_assoc();
+  if ($result->num_rows == 0)
+  {
+    header("location: ../scripts/logout.php");
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

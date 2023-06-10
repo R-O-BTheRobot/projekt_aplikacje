@@ -1,5 +1,7 @@
 <?php
 session_start();
+/** @var mysqli $conn*/
+
 if(!isset($_SESSION["loggedIn"]["role_ID"]))
 {
   header("location: ./index.php");
@@ -14,6 +16,19 @@ else
       break;
     case 3:
       break;
+  }
+}
+
+if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
+{
+  $userid = $_SESSION["loggedIn"]["user_ID"];
+  require_once("../scripts/dbconnect.php");
+  $sql = "SELECT id FROM users WHERE id=$userid;";
+  $result = $conn->query($sql);
+  $product = $result->fetch_assoc();
+  if ($result->num_rows == 0)
+  {
+    header("location: ../scripts/logout.php");
   }
 }
 /** @var mysqli $conn*/
@@ -275,6 +290,12 @@ USER_DATA;
         }]
     }).buttons().container().appendTo('#usertab_wrapper .col-md-6:eq(0)');
   });
+</script>
+<script>
+  //Enable tooltips
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" })
+  })
 </script>
 <script>
   $(document).on("click", "#redirectSrc", function () {

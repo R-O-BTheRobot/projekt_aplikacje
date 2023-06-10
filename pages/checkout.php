@@ -3,7 +3,19 @@
  * @var mysqli $conn
  */
 session_start();
-$price = 0;
+
+if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
+{
+  $userid = $_SESSION["loggedIn"]["user_ID"];
+  require_once("../scripts/dbconnect.php");
+  $sql = "SELECT id FROM users WHERE id=$userid;";
+  $result = $conn->query($sql);
+  $product = $result->fetch_assoc();
+  if ($result->num_rows == 0)
+  {
+    header("location: ../scripts/logout.php");
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -201,18 +213,18 @@ TAB_FIN;
                 <!-- /.col -->
                 <div class="col-6">
                   <?php
-                  $vat = $price-($price/1.23);
-                  $delivery = 15.00;
-                  if($price>=350.00)
-                  {
-                    $delivery = 0.00;
-                  }
-                  $delprice = $price + $delivery;
-                  $price = number_format((float)$price, 2, '.', '');
-                  $vat = number_format((float)$vat, 2, '.', '');
-                  $delivery = number_format((float)$delivery, 2, '.', '');
-                  $delprice = number_format((float)$delprice, 2, '.', '');
-                  if(isset($_SESSION["cart"]))
+
+                  if(isset($_SESSION["cart"])) {
+                    $vat = $price - ($price / 1.23);
+                    $delivery = 15.00;
+                    if ($price >= 350.00) {
+                      $delivery = 0.00;
+                    }
+                    $delprice = $price + $delivery;
+                    $price = number_format((float)$price, 2, '.', '');
+                    $vat = number_format((float)$vat, 2, '.', '');
+                    $delivery = number_format((float)$delivery, 2, '.', '');
+                    $delprice = number_format((float)$delprice, 2, '.', '');
                     echo <<< SUBTOTAL
                   <p class="lead">Podsumowanie:</p>
                   <div class="table-responsive">
@@ -237,6 +249,7 @@ TAB_FIN;
                   </div>
 SUBTOTAL;
 
+                  }
                   ?>
                 </div>
                 <!-- /.col -->
@@ -305,6 +318,12 @@ PAY_BUTTON;
 <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
+<script>
+  //Enable tooltips
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip({ trigger: "hover" })
+  })
+</script>
 <?php
 //Modal Popup Script
 if (isset($_SESSION["success"]) || isset($_SESSION["error"]))

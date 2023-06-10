@@ -10,10 +10,19 @@ if($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_SESSION["loggedIn"]["role_ID
   exit();
 }
 
-if(!isset($_POST["product_id"]) || !isset($_POST["size"]) || !isset($_POST["count"]))
+$rq_fields = ["product_id", "size", "count"];
+$translation_arr = ["product_id" => "Identyfikator Protuktu", "size" => "Rozmiar", "count" => "Ilość"];
+
+foreach($rq_fields as $value)
 {
-  $_SESSION["error"] = "Coś poszło nie tak. Skontaktuj się z administratorem.";
-  echo "<script>history.back()</script>";
+  if(empty($_POST[$value]))
+    $empty_fields[] = "Pole <b>$translation_arr[$value]</b> jest puste.";
+}
+
+if (!empty($empty_fields))
+{
+  $_SESSION["error"] = implode("<br>", $empty_fields);
+  echo "<script>history.back();</script>";
   exit();
 }
 

@@ -11,6 +11,12 @@ function sanitizeInput($input):string
   return htmlentities(stripslashes(trim($input)));
 }
 
+if(!isset($_SESSION["loggedIn"]["role_ID"]) || $_SESSION["loggedIn"]["role_ID"] == 1)
+{
+  header("location: ../pages/index.php");
+  exit();
+}
+
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
   $rq_fields = ["tytul", "picture_link", "opis_short", "opis_long", "type", "cena"];
