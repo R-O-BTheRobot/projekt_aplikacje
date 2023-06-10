@@ -11,7 +11,8 @@
     {
       $id = $result->fetch_assoc()["id"];
       $stmt = $conn->prepare("UPDATE users SET activated=1 WHERE id=?");
-      $stmt->execute($id);
+      $stmt->bind_param("i", $id);
+      $stmt->execute();
       if ($stmt->affected_rows == 1)
       {
         header("location: ./index.php?activated=1");
