@@ -160,7 +160,10 @@ TAB_STRT;
                       $stmt->execute();
                       $result = $stmt->get_result();
                       $product = $result->fetch_assoc();
-                      $price = $price + ($product["cena"]*$num);
+                      if(!isset($price))
+                        $price = ($product["cena"]*$num);
+                      else
+                        $price = $price + ($product["cena"]*$num);
                       echo <<< CART_DATA
                             <tr>
                               <td>$product[tytul]</td>
