@@ -63,6 +63,15 @@
       if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s])\S{8,32}$/', $_POST["newPass"]))
         $filter_err[] = "Hasło nie spełnia wymagań!";
 
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+    $stmt->bind_param('s', $_mail);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows != 0)
+    {
+      $filter_err[] = "Podany email jest zajęty!";
+    }
+
     if (!empty($filter_err))
     {
       $_SESSION["error"] = implode("<br>", $filter_err);

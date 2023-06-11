@@ -83,24 +83,11 @@ ERROR;
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-7">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Zapamiętaj mnie
-              </label>
-            </div>
-          </div>
-        </div>
         <div class="social-auth-links text-center mt-2 mb-3">
           <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
         </div>
       </form>
 
-      <p class="mb-1">
-        <a href="forgot-password.html">Nie pamiętasz hasła?</a>
-      </p>
       <p class="mb-0">
         Nie masz konta? <a href="register.php" class="text-center">Zarejestruj się!</a>
       </p>
