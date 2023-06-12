@@ -6,14 +6,6 @@ if(!isset($_GET["productid"]) || !is_numeric($_GET["productid"]))
 {
   header("location: ./index.php");
 }
-require_once("../scripts/dbconnect.php");
-$sql = "SELECT product_id FROM products WHERE product_id=$_GET[productid];";
-$result = $conn->query($sql);
-$product = $result->fetch_assoc();
-if ($result->num_rows == 0)
-{
-  header("location: ./index.php");
-}
 
 if(!isset($_SESSION["loggedIn"]["role_ID"]))
 {
@@ -47,6 +39,15 @@ if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
     header("location: ../scripts/logout.php");
   }
 }
+
+require_once("../scripts/dbconnect.php");
+$sql = "SELECT tytul FROM products WHERE product_id=$_GET[productid];";
+$result = $conn->query($sql);
+$product = $result->fetch_assoc();
+if ($result->num_rows == 0)
+{
+  header("location: ./index.php");
+}
 /** @var mysqli $conn*/
 ?>
 <!DOCTYPE html>
@@ -54,7 +55,10 @@ if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | DataTables</title>
+  <?php
+  echo "<title>SklepXYZ | Edycja produktu $product[tytul]</title>";
+  ?>
+  <link rel="icon" type="image/x-icon" href="../dist/img/favicon.png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -216,12 +220,10 @@ USER_DATA;
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+
+  <?php
+  require_once "./footer.php";
+  ?>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

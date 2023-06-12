@@ -20,7 +20,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sklep XYZ</title>
+  <title>Sklep XYZ | Strona główna</title>
+  <link rel="icon" type="image/x-icon" href="../dist/img/favicon.png">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -151,6 +152,9 @@ GET_PRODUCTS_FROM_DB;
       </div>
     </section>
   </div>
+  <?php
+  require_once "./footer.php";
+  ?>
 </div>
 <script src="../plugins/jquery/jquery.min.js"></script>
 <script src="../dist/js/adminlte.js"></script>

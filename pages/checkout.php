@@ -22,7 +22,8 @@ if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Invoice</title>
+  <title>Sklep XYZ | Koszyk</title>
+  <link rel="icon" type="image/x-icon" href="../dist/img/favicon.png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -312,12 +313,10 @@ PAY_BUTTON;
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer no-print">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+
+  <?php
+  require_once "./footer.php";
+  ?>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

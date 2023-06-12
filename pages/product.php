@@ -36,8 +36,9 @@ if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <?php
-    echo "<title>$product[tytul] - Sklep XYZ</title>";
+    echo "<title>SklepXYZ | $product[tytul]</title>";
   ?>
+  <link rel="icon" type="image/x-icon" href="../dist/img/favicon.png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -216,12 +217,9 @@ PRODUCT_DETAILS;
   </div>
   <!-- /.content-wrapper -->
 
-  <footer class="main-footer">
-    <div class="float-right d-none d-sm-block">
-      <b>Version</b> 3.2.0
-    </div>
-    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
-  </footer>
+  <?php
+  require_once "./footer.php";
+  ?>
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
