@@ -20,7 +20,7 @@ if(isset($_SESSION["loggedIn"]["user_ID"])) //Logout if user got deleted
   }
 }
 
-$sql = "SELECT product_id, title FROM products WHERE product_id=$_GET[productid];";
+$sql = "SELECT product_id, tytul FROM products WHERE product_id=$_GET[productid];";
 $result = $conn->query($sql);
 $product = $result->fetch_assoc();
 if ($result->num_rows == 0)
