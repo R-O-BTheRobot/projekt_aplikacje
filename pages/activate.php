@@ -1,7 +1,6 @@
 <?php
   /**@var mysqli $conn*/
   session_start();
-  header("location: ./index.php");
 
   if(isset($_GET["id"]))
   {
@@ -50,4 +49,5 @@
       }
     }
   }
+  header("location: ./index.php");
 ?>
