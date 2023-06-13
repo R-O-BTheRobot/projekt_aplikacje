@@ -25,7 +25,7 @@
       exit();
     }
 
-    $sql = "SELECT id FROM users WHERE id=$_POST[user_ID]";
+    $sql = "SELECT id, email FROM users WHERE id=$_POST[user_ID]";
     $result = $conn->query($sql);
     if ($result->num_rows != 1)
     {
@@ -33,6 +33,7 @@
       echo "<script>history.back();</script>";
       exit();
     }
+    $dbmail = $result->fetch_assoc()["email"];
 
     $translation_arr = ["user_ID" => "Identyfikator Użytkownika", "firstName" => "Imię", "lastName" => "Nazwisko", "email" => "E-mail", "role" => "Typ"];
 
@@ -63,13 +64,13 @@
       if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d\s])\S{8,32}$/', $_POST["newPass"]))
         $filter_err[] = "Hasło nie spełnia wymagań!";
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email=?");
+    $stmt = $conn->prepare("SELECT email FROM users WHERE email=?");
     $stmt->bind_param('s', $email);
     $stmt->execute();
     $result = $stmt->get_result();
-    if ($result->num_rows != 0)
+    if ($result->num_rows != 0 && $dbmail != $email)
     {
-      $filter_err[] = "Podany email jest zajęty!";
+      $filter_err[] = "Podany E-mail jest zajęty!";
     }
 
     if (!empty($filter_err))
