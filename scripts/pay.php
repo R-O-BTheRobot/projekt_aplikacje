@@ -164,7 +164,7 @@ else
     }
   }
   unset($_SESSION["cart"]);
-  //header("location: ../pages/thankyou.php");
+  header("location: ../pages/thankyou.php");
   echo "All OK!";
   exit();
 }
