@@ -156,16 +156,22 @@ ERROR;
                     <th>E-mail</th>
                     <th>Typ</th>
                     <th>Data utworzenia</th>
+                    <th>Status konta</th>
                     <th class="noExport">Akcja</th>
                   </tr>
                   </thead>
                   <tbody>
                   <?php
                   require_once "../scripts/dbconnect.php";
-                  $sql = "SELECT U.id, U.firstName, U.lastName, U.email, R.role, U.created_at FROM users U INNER JOIN roles R ON R.role_id = U.role_id";
+                  $sql = "SELECT U.id, U.firstName, U.lastName, U.email, R.role, U.created_at, U.activated, U.password FROM users U INNER JOIN roles R ON R.role_id = U.role_id";
                   $result = $conn->query($sql);
                   while ($user = $result->fetch_assoc())
                   {
+                    $activate_id = substr($user["password"], 31, 10);
+                    if ($user["activated"])
+                      $activated = "Aktywowany";
+                    else
+                      $activated = "Nieaktywowany";
                     echo <<< USER_DATA
                         <tr>
                             <td>$user[firstName]</td>
@@ -173,12 +179,29 @@ ERROR;
                             <td>$user[email]</td>
                             <td>$user[role]</td>
                             <td>$user[created_at]</td>
+                            <td>$activated</td>
                             <td class="d-flex">
                                 <a href="./edituser.php?userid=$user[id]"><button class="btn btn-outline-primary">Edytuj</button></a><br/>
+USER_DATA;
+                                if($user["activated"])
+                                {
+                                  echo "<button disabled class='btn btn-outline-success'>Manualnie aktywuj</button><br/>";
+                                }
+                                else
+                                {
+                                  echo <<< ACTIVATE
+                            <form action="./activate.php" method="POST">
+                              <input type="hidden" name="activate_id" value="$activate_id">
+                              <button type="submit" class="btn btn-outline-success">Manualnie aktywuj</button><br/>
+                            </form>
+ACTIVATE;
+
+                                }
+                  echo <<< USER_DATA2
                                 <a href="#warningModal" id="redirectSrc" data-toggle="modal" data-redirect="../scripts/deleteuser.php?userid=$user[id]" data-username="$user[firstName] $user[lastName]"><button class="btn btn-outline-danger">Usuń</button></a>
                             </td>
                         </tr>
-USER_DATA;
+USER_DATA2;
 
                   }
 
@@ -191,6 +214,7 @@ USER_DATA;
                     <th>E-mail</th>
                     <th>Typ</th>
                     <th>Data utworzenia</th>
+                    <th>Status konta</th>
                     <th>Akcja</th>
                   </tr>
                   </tfoot>
