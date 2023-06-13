@@ -120,7 +120,7 @@ foreach($_SESSION["cart"] as $product_id => $product_arr)
       }
       else
       {
-        echo "$product_id - OK<br>";
+        //echo "$product_id - OK<br>";
       }
     }
   }
@@ -131,7 +131,7 @@ if ($cart_err!=0)
   $_SESSION["error"] = "Niestety, niektóre produkty z twojego koszyka są już niedostępne.<br>"
     . "Zaktualizowaliśmy twój koszyk. Potwierdź nowe zamówienie.";
   echo "Cart error<br>";
-  print_r($_SESSION["cart"]);
+  //print_r($_SESSION["cart"]);
   exit();
 }
 else
@@ -151,7 +151,7 @@ else
         $item_id = $wh["item_id"];
       }
       $ncount = $count-$num;
-      echo "$product_id - $count, $num, $ncount<br>";
+      //echo "$product_id - $count, $num, $ncount<br>";
       $stmt = $conn->prepare("UPDATE `warehouse` SET `count` = ? WHERE `warehouse`.`item_id` = ?");
       $stmt->bind_param("ii", $ncount, $item_id);
       $stmt->execute();
