@@ -40,6 +40,7 @@
       if ($stmt->affected_rows == 1)
       {
         echo "<script>history.back()</script>";
+        exit();
       }
       else
       {

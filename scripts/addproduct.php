@@ -6,23 +6,23 @@ session_start();
 require_once "./dbconnect.php";
 //print_r($_POST);
 
-function sanitizeInput($input):string
+function sanitizeInput($input):string //Function to deal with most entry errors, such as surrounding the text in spaces, adding escaped quotes, and turning the text into HTML entities for safety
 {
   return htmlentities(stripslashes(trim($input)));
 }
 
-if(!isset($_SESSION["loggedIn"]["role_ID"]) || $_SESSION["loggedIn"]["role_ID"] == 1)
+if(!isset($_SESSION["loggedIn"]["role_ID"]) || $_SESSION["loggedIn"]["role_ID"] == 1) //Is the correct user type accessing this script?
 {
   header("location: ../pages/index.php");
   exit();
 }
 
-if($_SERVER["REQUEST_METHOD"] == "POST")
+if($_SERVER["REQUEST_METHOD"] == "POST")  //Check if the request came through POST and not GET
 {
   $rq_fields = ["tytul", "picture_link", "opis_short", "opis_long", "type", "cena"];
   $translation_arr = ["product_id" => "Identyfikator Produktu", "tytul" => "Nazwa", "opis_short" => "Krótki opis", "opis_long" => "Długi opis", "type" => "Typ", "picture_link" => "Główne zdjęcie", "cena" => "Cena"];
 
-  foreach($rq_fields as $value)
+  foreach($rq_fields as $value) //Checking for all the required values
   {
     if($value == "picture_link")
     {
@@ -34,17 +34,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $empty_fields[] = "Pole <b>$translation_arr[$value]</b> jest puste.";
   }
 
-  if (!empty($empty_fields))
+  if (!empty($empty_fields))  //Throw an error if any are missing
   {
     $_SESSION["error"] = implode("<br>", $empty_fields);
     echo "<script>history.back();</script>";
     exit();
   }
 
-  foreach ($_POST as $key => $value)
+  foreach ($_POST as $key => $value)  //Turn $_POST["key"] into $key for convenience
   {
     $$key = sanitizeInput($_POST["$key"]);
   }
+
+  //Adapted W3 script for saving a picture locally
 
   $target_dir = "../dist/upload/";
   $target_file = $target_dir . basename($_FILES["picture_link"]["name"]);
@@ -93,7 +95,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     }
   }
 
-  if (!empty($file_err))
+  if (!empty($file_err))  //Check if any of the above file error checks failed
   {
     $_SESSION["error"] = implode("<br>", $file_err);
     echo "<script>history.back();</script>";
@@ -104,15 +106,15 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
   $stmt->bind_param('ssisds', $tytul, $target_file, $type, $opis_short, $cena, $opis_long);
   $stmt->execute();
 
-  if ($stmt->affected_rows == 1)
+  if ($stmt->affected_rows == 1)  //Check if SQL executed properly and affected 1 row
   {
-    $_SESSION["success"] = "Dodano produkt $tytul!";
+    $_SESSION["success"] = "Dodano produkt $tytul!";  //Announce success
   }
-  else
+  else  //Throw an error
   {
     $_SESSION["error"] = "Coś poszło nie tak. Skontaktuj się z administratorem.";
   }
-  header("location: ../pages/addproduct.php");
+  header("location: ../pages/addproduct.php");  //Return to /pages/addproduct.php
   exit();
 }
 header("location: ../pages/index.php");

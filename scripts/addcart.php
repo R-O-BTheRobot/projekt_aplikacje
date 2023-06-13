@@ -3,12 +3,11 @@
 /** @var int $product_id */
 /** @var int $size */
 session_start();
-//unset($_SESSION["cart"]);
-//print_r($_POST);
+
 $required_fields = ["size", "product_id"];
 $translation_arr = ["size" => "Rozmiar", "product_id" => "Identyfikator Produktu"];
 
-if($_SERVER["REQUEST_METHOD"]=="POST")
+if($_SERVER["REQUEST_METHOD"]=="POST")  //Check if the request came through POST and not GET
 {
   foreach ($_POST as $key => $value)  //Change $_POST[name] to $name for simplicity
   {
@@ -16,7 +15,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST")
     //echo $$key;
   }
 }
-elseif($_SERVER["REQUEST_METHOD"]=="GET")
+elseif($_SERVER["REQUEST_METHOD"]=="GET") //Check if the request came through GET and not POST
 {
   foreach ($_GET as $key => $value)  //Change $_GET[name] to $name for simplicity
   {
@@ -39,7 +38,7 @@ if (!empty($rq_field_err))
   exit();
 }
 
-require_once "./dbconnect.php";
+require_once "./dbconnect.php"; //Loading up all the queries to check if the required fields make sense
 $stmt_sid = $conn->prepare("SELECT size_id FROM sizes WHERE size_id=?");
 $stmt_sid->bind_param("i", $size);
 $stmt_sid->execute();
@@ -57,7 +56,7 @@ if($result_sid->num_rows == 0 || $result_pid->num_rows == 0)  //Do the required 
 }
 
 
-if (!isset($_SESSION["cart"]))
+if (!isset($_SESSION["cart"]))  //Check if the cart variable is set
 {
   $stmt = $conn->prepare("SELECT item_id FROM warehouse WHERE product_id=? AND size=?;");
   $stmt->bind_param("ii", $product_id, $size);
@@ -72,27 +71,27 @@ if (!isset($_SESSION["cart"]))
     echo "<script>history.back();</script>";
     exit();
   }
-  else
+  else  //Throw an error
   {
     $_SESSION["error"] = "Wybranego produktu nie ma już w magazynie. Przepraszamy za niedogodności.";
     echo "<script>history.back();</script>";
     exit();
   }
 }
-else
+else  //If cart var is set
 {
   $stmt = $conn->prepare("SELECT count FROM warehouse WHERE product_id=? AND size=?;");
   $stmt->bind_param("ii", $product_id, $size);
   $stmt->execute();
   $result = $stmt->get_result()->fetch_assoc();
-  if(isset($_SESSION["cart"][$product_id]))
+  if(isset($_SESSION["cart"][$product_id])) //Is there another product of the same type in the cart?
   {
-    $count = array_count_values($_SESSION["cart"][$product_id]);
-    if(isset($count[$size]))
+    $count = array_count_values($_SESSION["cart"][$product_id]);  //Count how many of each size are there
+    if(isset($count[$size]))  //Check if there's a product of the same type and size in the cart already
     {
-      if($result["count"] != 0 && $count[$size]+1 <= $result["count"])
+      if($result["count"] != 0 && $count[$size]+1 <= $result["count"])  //Check if the count isn't 0 and if adding another one won't go over the warehouse limits
       {
-        if(isset($_SESSION["cart"][$product_id]))
+        if(isset($_SESSION["cart"][$product_id])) //This check appears redundant. Will likely be removed in a future revision
         {
           $_SESSION["cart"][$product_id][] = $size;
           print_r($_SESSION["cart"][$product_id]);
@@ -104,22 +103,22 @@ else
           print_r($_SESSION["cart"]);
           print_r($_SESSION["cart"][$product_id]);
         }
-        $_SESSION["success"] = "Produkt został dodany do koszyka!";
+        $_SESSION["success"] = "Produkt został dodany do koszyka!"; //Announce success and return to the previous page
         echo "<script>history.back();</script>";
         exit();
       }
-      else
+      else  //Throw an error
       {
         $_SESSION["error"] = "Brak dodatkowych sztuk w magazynie. Przepraszamy za niedogodności.";
         echo "<script>history.back();</script>";
         exit();
       }
     }
-    else
+    else  //If there is a product of the same type and size
     {
-      if($result["count"] != 0)
+      if($result["count"] != 0) //Check if the size is available in the warehouse
       {
-        if(isset($_SESSION["cart"][$product_id]))
+        if(isset($_SESSION["cart"][$product_id])) //The redundant check appears to be copied in here too. Will likely be removed in the future
         {
           $_SESSION["cart"][$product_id][] = $size;
           print_r($_SESSION["cart"][$product_id]);
@@ -131,11 +130,11 @@ else
           print_r($_SESSION["cart"]);
           print_r($_SESSION["cart"][$product_id]);
         }
-        $_SESSION["success"] = "Produkt został dodany do koszyka!";
+        $_SESSION["success"] = "Produkt został dodany do koszyka!"; //Announce success and return to the previous page
         echo "<script>history.back();</script>";
         exit();
       }
-      else
+      else  //Throw an error
       {
         $_SESSION["error"] = "Wybranego produktu nie ma już w magazynie. Przepraszamy za niedogodności.";
         echo "<script>history.back();</script>";
@@ -143,11 +142,11 @@ else
       }
     }
   }
-  else
+  else  //If there's no product of the same type in the cart
   {
-    if($result["count"] != 0)
+    if($result["count"] != 0) //Check if the size is available in the warehouse
     {
-      if(isset($_SESSION["cart"][$product_id]))
+      if(isset($_SESSION["cart"][$product_id])) //Once again, the seemingly redundant check appears here too
       {
         $_SESSION["cart"][$product_id][] = $size;
         print_r($_SESSION["cart"][$product_id]);
@@ -159,11 +158,11 @@ else
         print_r($_SESSION["cart"]);
         print_r($_SESSION["cart"][$product_id]);
       }
-      $_SESSION["success"] = "Produkt został dodany do koszyka!";
+      $_SESSION["success"] = "Produkt został dodany do koszyka!"; //Announce success and return to the previous pag
       echo "<script>history.back();</script>";
       exit();
     }
-    else
+    else  //Throw an error
     {
       $_SESSION["error"] = "Wybranego produktu nie ma już w magazynie. Przepraszamy za niedogodności.";
       echo "<script>history.back();</script>";

@@ -4,13 +4,13 @@ session_start();
 
 require_once "./dbconnect.php";
 
-if(!isset($_SESSION["loggedIn"]["role_ID"]) || $_SESSION["loggedIn"]["role_ID"] == 1)
+if(!isset($_SESSION["loggedIn"]["role_ID"]) || $_SESSION["loggedIn"]["role_ID"] == 1) //Check if it's the correct user type accessing the script
 {
   header("location: ../pages/index.php");
   exit();
 }
 
-if($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["product_id"]))
+if($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["product_id"]))  //Check if the request came through POST and not GET
 {
   header("location: ../pages/index.php");
   echo "<script>history.back()</script>";
@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] != "POST" || !isset($_POST["product_id"]))
 $sqlsel = "SELECT tytul FROM products WHERE product_id=$_POST[product_id]";
 $resultsel = $conn->query($sqlsel);
 
-if ($resultsel->num_rows != 1)
+if ($resultsel->num_rows != 1)  //Check if the Product ID is correct
 {
   $_SESSION["error"] = "Coś poszło nie tak. ID produktu jest błędne.";
   echo "<script>history.back()</script>";
@@ -31,12 +31,14 @@ else
   $prod = $resultsel->fetch_assoc();
 }
 
-if(empty($_FILES["secondaryPicture"]["name"]) && empty($_FILES['secondaryPicture']['tmp_name']))
+if(empty($_FILES["secondaryPicture"]["name"]) && empty($_FILES['secondaryPicture']['tmp_name']))  //Check if a file has been selected
 {
   $_SESSION["error"] = "Nie wybrano żadnego zdjęcia!";
   echo "<script>history.back()</script>";
   exit();
 }
+
+//Adapted W3 script for saving a picture locally
 
 $target_dir = "../dist/upload/";
 $target_file = $target_dir . basename($_FILES["secondaryPicture"]["name"]);
@@ -85,24 +87,24 @@ if ($uploadOk == 0) {
   }
 }
 
-if (!empty($file_err))
+if (!empty($file_err))  //Check if any of the above file error checks failed
 {
   $_SESSION["error"] = implode("<br>", $file_err);
   echo "<script>history.back()</script>";
   exit();
 }
 
-$stmt = $conn->prepare("INSERT INTO `pictures` (`id`, `product_id`, `picture_link`) VALUES (NULL, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO `pictures` (`id`, `product_id`, `picture_link`) VALUES (NULL, ?, ?)");  //Safely save the picture path to the database
 $stmt->bind_param('is', $_POST["product_id"], $target_file);
 $stmt->execute();
 
-if ($stmt->affected_rows == 1)
+if ($stmt->affected_rows == 1)  //Check if SQL executed properly and affected 1 row
 {
-  $_SESSION["success"] = "Zdjęcie zostało dodane!";
+  $_SESSION["success"] = "Zdjęcie zostało dodane!"; //Announce success and return to the previous page
   echo "<script>history.back()</script>";
   exit();
 }
-else
+else  //Throw an error
 {
   $_SESSION["error"] = "Wystąpił błąd. Skontaktuj się z administratorem.";
   echo "<script>history.back()</script>";
