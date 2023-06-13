@@ -15,8 +15,8 @@ $translation_arr = ["product_id" => "Identyfikator Protuktu", "size" => "Rozmiar
 
 foreach($rq_fields as $value)
 {
-  if(empty($_POST[$value]))
-    $empty_fields[] = "Pole <b>$translation_arr[$value]</b> jest puste.";
+  if(strlen($_POST[$value]) == 0)
+    $empty_fields[] = "Pole <b>$translation_arr[$value]</b> jest puste. strlen($_POST[$value])";
 }
 
 if (!empty($empty_fields))
