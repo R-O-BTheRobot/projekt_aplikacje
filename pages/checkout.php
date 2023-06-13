@@ -265,15 +265,19 @@ SUBTOTAL;
                   <?php
                   if(!isset($_SESSION["cart"]))
                     echo <<< PAY_BUTTON
-                    <button type="button" disabled class="btn btn-success float-right"><i class="far fa-credit-card"></i>
-                      Prejdź do płatności
-                    </button>
+                    <div class="float-right" data-toggle="tooltip" data-placement="top" title="Twój koszyk jest pusty!" tabindex="0">
+                      <button type="button" disabled class="btn btn-success" style="pointer-events: none;"><i class="far fa-credit-card"></i>
+                        Prejdź do płatności
+                      </button>
+                    </div>
 PAY_BUTTON;
                   elseif(!isset($_SESSION["loggedIn"]))
                     echo <<< PAY_BUTTON
-                    <button type="button" disabled class="btn btn-success float-right"><i class="far fa-credit-card"></i>
-                      Prejdź do płatności
-                    </button>
+                    <div class="float-right" data-toggle="tooltip" data-placement="top" title="Najpierw zaloguj się!">
+                      <button type="button" disabled class="btn btn-success" style="pointer-events: none;"><i class="far fa-credit-card"></i>
+                        Prejdź do płatności
+                      </button>
+                    </div>
 PAY_BUTTON;
                   else
                   {
@@ -293,9 +297,11 @@ PAY_BUTTON;
                     }
                     else
                       echo <<< PAY_BUTTON
-                    <button type="button" disabled data-toggle="tooltip" data-placement="top" title="Najpierw zweryfikuj swoje konto!" class="btn btn-success float-right"><i class="far fa-credit-card"></i>
-                      Prejdź do płatności
-                    </button>
+                    <div class="float-right" data-toggle="tooltip" data-placement="top" title="Najpierw zweryfikuj swoje konto!">
+                      <button type="button" disabled class="btn btn-success" style="pointer-events: none;"><i class="far fa-credit-card"></i>
+                        Prejdź do płatności
+                      </button>
+                    </div>
 PAY_BUTTON;
                   }
                   //if `activated` == 0
